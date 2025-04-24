@@ -14,7 +14,7 @@
 
 <body>
 
-    <div class="p-3">
+    <div class="p-3 d-flex justify-center">
         <div class="topbar">
             <div class="d-flex align-items-center justify-between px-2">
                 <a href="{{ route('customer.dashboard') }}" class="text-lg font-bold">Memorelic</a>

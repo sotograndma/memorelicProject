@@ -43,15 +43,16 @@ p {
 }
 
 .topbar {
+    width: 1400px;
     background: linear-gradient(160deg, #202020, #363636); 
     color: #ffffff !important; 
     backdrop-filter: blur(10px); 
     -webkit-backdrop-filter: blur(10px); 
     box-shadow: rgba(61, 61, 61, 0.733) 0px 0px 20px; 
     border: 1px solid rgba(146, 146, 146, 0.63); 
-    border-radius: 20px !important;
+    border-radius: 100px !important;
     margin-bottom: 30px;
-    padding: 10px 25px !important;
+    padding: 10px 35px !important;
 }
 
 .bg_dropdown {
