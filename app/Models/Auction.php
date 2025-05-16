@@ -24,6 +24,26 @@ class Auction extends Model
         'highest_bidder_id',
         'status',
         'is_checkout_done',
+
+        // Fields tambahan dari migration
+        'condition',
+        'year_of_origin',
+        'material',
+        'height',
+        'width',
+        'weight',
+        'region_of_origin',
+        'maker',
+        'rarity_level',
+        'authenticity_certificate',
+        'authenticity_certificate_images',
+        'restoration_info',
+        'provenance',
+        'category',
+        'damage_notes',
+        'shipping_locations',
+        'shipping_cost',
+        'returns_package',
     ];
 
     protected $casts = [

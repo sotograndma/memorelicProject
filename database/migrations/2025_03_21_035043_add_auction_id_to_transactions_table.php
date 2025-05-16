@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration {
     public function up(): void
@@ -18,11 +19,22 @@ return new class extends Migration {
 
     public function down(): void
     {
+        // Step 1: Drop FK auction_id jika kolom ada
         Schema::table('transactions', function (Blueprint $table) {
-            $table->dropForeign(['auction_id']);
-            $table->dropColumn('auction_id');
+            if (Schema::hasColumn('transactions', 'auction_id')) {
+                try {
+                    // Pakai raw SQL untuk memastikan constraint hanya di-drop kalau benar-benar ada
+                    DB::statement('ALTER TABLE transactions DROP FOREIGN KEY transactions_auction_id_foreign');
+                } catch (\Throwable $e) {
+                    // Optional: log or ignore
+                }
 
-            // Kembalikan item_id menjadi wajib jika rollback
+                $table->dropColumn('auction_id');
+            }
+        });
+
+        // Step 2: Kembalikan item_id jadi NOT NULL
+        Schema::table('transactions', function (Blueprint $table) {
             $table->unsignedBigInteger('item_id')->nullable(false)->change();
         });
     }
