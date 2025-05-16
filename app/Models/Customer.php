@@ -16,6 +16,7 @@ class Customer extends Authenticatable
         'email',
         'password',
         'profile_photo',
+        'locations',
     ];
 
     protected $hidden = [
@@ -48,6 +49,7 @@ class Customer extends Authenticatable
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
             'profile_photo' => $data['profile_photo'] ?? null,
+            'locations' => $data['locations'] ?? null,
         ]);
 
         // Tambahkan juga ke tabel users

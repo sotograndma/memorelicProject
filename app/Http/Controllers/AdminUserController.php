@@ -54,12 +54,14 @@ class AdminUserController extends Controller
             'username' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users|unique:customers',
             'password' => 'required|string|min:6|confirmed',
+            'locations' => 'nullable|string',
         ]);
 
         Customer::createWithUser($request->all());
 
         return redirect()->route('admin.users.index')->with('success', 'Customer berhasil ditambahkan.');
     }
+
 
     /**
      * Menampilkan form edit akun

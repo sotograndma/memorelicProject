@@ -34,6 +34,11 @@
                     <input type="file" class="form-control" id="profile_photo" name="profile_photo">
                 </div>
 
+                <div class="mb-3">
+                    <label for="locations" class="form-label">Lokasi (Opsional)</label>
+                    <textarea class="form-control" id="locations" name="locations" rows="2" placeholder="Contoh: Jl. Sudirman No. 99, Jakarta"></textarea>
+                </div>
+
                 <button type="submit" class="btn btn-success">Simpan</button>
                 <a href="{{ route('admin.users.index') }}" class="btn btn-secondary">Kembali</a>
             </form>

@@ -113,7 +113,14 @@
 
                 </div>
                 <div>
-                    <li><a href="{{ route('customer.transactions.history') }}" class="block">Deliver To: <span class="fw-bold">Indonesia</span></a></li>
+                    <li>
+                        <a href="" class="block">
+                            Deliver To: 
+                            <span class="fw-bold">
+                                {{ Auth::user()->userable->locations ?? 'Lokasi belum diatur' }}
+                            </span>
+                        </a>
+                    </li>
                 </div>
             </div>
         </div>
