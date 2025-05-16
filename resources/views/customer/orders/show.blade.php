@@ -25,7 +25,7 @@
                         <!-- Informasi Produk -->
                         <div class="w-full md:w-1/2">
                             <p class="fs-5">{{ $item->name }}</p>
-                            <p class="text-neutral-500">Terjual 250+ | 5 (166 rating)</p>
+                            <p class="text-neutral-500">Terjual {{ $item->sold_count }} | 5 (166 rating)</p>
     
                             <p class="fw-bold mt-3 fs-2 main_color">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
     
@@ -78,34 +78,58 @@
                     <p class="mt-1 main_color">Delivery <span class="fw-bold">Tuesday, May 27.</span></p>
                     <div class="d-flex gap-2 align-items-center mt-4">
                         <i class="bi bi-geo-alt"></i>
-                        <p class="">deliver to <br><span class="fw-bold underline">my home</span></p>
+                        <p class="">deliver to <br><span class="fw-bold underline">
+                                {{ Auth::user()->userable->locations ?? 'Lokasi belum diatur' }}
+                            </span></p>
                     </div>
 
+                    <!-- Stok dan Kuantitas -->
                     <div class="mt-4">
-                        <p class="text-green-300 fw-bold fs-5">In Stock</p>
-                        <p class="italic text-green-500">Stock: 5 remaining</p>
+                        @if ($item->stock > 0)
+                            <p class="text-green-300 fw-bold fs-5">In Stock</p>
+                            <p class="italic text-green-500">Stock: {{ $item->stock }} remaining</p>
+                        @else
+                            <p class="text-red-400 fw-bold fs-5">Out of Stock</p>
+                        @endif
                     </div>
 
-                    <div class="dropdown mt-4 d-flex bg-neutral-700 border-1 border-neutral-500" style="display: inline-block; border-radius: 12px; padding: 5px 10px;width: 100%;">
-                        <p class="text-neutral-400" for="quantity" style="margin-right: 5px;">Quantity:</p>
-                        <select id="quantity" class="form-select form-select-sm text-neutral-400" style="display: inline-block; width: auto; border: none; background: transparent; padding: 0; box-shadow: none;">
-                            <option value="1" selected>1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
-                    </div>
+                    @if ($item->stock > 0)
+                        <form method="GET" action="{{ route('customer.checkout', ['item_id' => $item->id]) }}">
+                            <input type="hidden" name="type" value="item">
 
-                    <div class="my-4">
-                        <hr>
-                    </div>
+                            <div class="dropdown mt-4 d-flex bg-neutral-700 border-1 border-neutral-500"
+                                style="display: inline-block; border-radius: 12px; padding: 5px 10px;width: 100%;">
+                                <p class="text-neutral-400" style="margin-right: 5px;">Quantity:</p>
+                                <select name="quantity" class="form-select form-select-sm text-neutral-400"
+                                    style="display: inline-block; width: auto; border: none; background: transparent; padding: 0; box-shadow: none;">
+                                    @for ($i = 1; $i <= min(5, $item->stock); $i++)
+                                        <option value="{{ $i }}">{{ $i }}</option>
+                                    @endfor
+                                </select>
+                            </div>
 
-                    <div class="mt-4">
-                        <button style="font-size: 0.85em; width: 100%;" class="btn btn-mainOutline">Add to Cart</button>
-                        <a href="{{ route('customer.checkout', ['item_id' => $item->id, 'type' => 'item']) }}"><button style="font-size: 0.85em; width: 100%;" class="btn btn-main mt-2">Buy Now</button></a>
-                        
-                    </div>
+                            <div class="my-4">
+                                <hr>
+                            </div>
+
+                            <div class="mt-4">
+                                <button type="submit" style="font-size: 0.85em; width: 100%;" class="btn btn-main mt-2">
+                                    Buy Now
+                                </button>
+                            </div>
+                        </form>
+
+                    @else
+                        <div class="my-4">
+                            <hr>
+                        </div>
+
+                        <div class="mt-4">
+                            <button disabled style="font-size: 0.85em; width: 100%;" class="btn btn-secondary mt-2">Out of Stock</button>
+                        </div>
+                    @endif
+
+                    <button style="font-size: 0.85em; width: 100%;" class="btn btn-mainOutline mt-2">Add to Cart</button>
 
                     <div class="mt-4">
                         <table>

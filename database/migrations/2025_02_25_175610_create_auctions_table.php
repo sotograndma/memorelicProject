@@ -60,7 +60,6 @@ return new class extends Migration {
             ])->nullable();
 
             $table->enum('returns_package', ['30-Day Refund / Replacement', '7-Day Refund Only', 'No Return / Final Sale'])->nullable(); // Return policy
-
             $table->timestamps();
         });
     }

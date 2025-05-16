@@ -16,7 +16,8 @@ class Transaction extends Model
         'total_price',
         'status',
         'payment_code',
-        'shipping_address'
+        'shipping_address',
+        'quantity',
     ];
 
     // Relasi ke User (Customer)

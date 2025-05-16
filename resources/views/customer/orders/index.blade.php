@@ -84,7 +84,7 @@
                             </p>
 
                             <p class="text-sm text-gray-500 flex items-center mt-1">
-                                4.9 | 500+ terjual
+                                4.9 | {{ $item->sold_count }} terjual
                             </p>
 
                             <div class="mt-4 d-flex justify-content-end">
@@ -118,49 +118,10 @@
             <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0">
 
-                    @if (session('success'))
-                        <div class="bg-green-400 text-white p-2 mt-4 rounded">
-                            {{ session('success') }}
-                        </div>
-                    @endif
-
-                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-4">
-                        @foreach ($items as $item)
-                            @if ($item->status == 'available')
-
-                                <div class="bg_jual-beli">
-                                    <a href="{{ route('customer.orders.show', $item->id) }}">
-                                        <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
-                                            class="w-full h-48 object-cover rounded-lg">
-                                    </a>
-
-                                    <p class="fs-5 mt-2 truncate">{{ $item->name }}</p>
-
-                                    <p class="fw-bold">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-
-                                    <p class="text-sm text-gray-500 flex items-center mt-4">
-                                        Jakarta, Indonesia
-                                    </p>
-
-                                    <p class="text-sm text-gray-500 flex items-center mt-1">
-                                        4.9 | 500+ terjual
-                                    </p>
-
-                                    <div class="mt-4 d-flex justify-content-end">
-                                        <a href="{{ route('customer.orders.show', $item->id) }}"
-                                        style="font-size: 0.85em" class="btn btn-main">Lihat</a>
-                                    </div>
-                                </div>
-
-                            @endif
-                        @endforeach
-                    </div>
-
                 </div>
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0">
 
                     
-
                 </div>
                 {{-- <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0">...</div>
                 <div class="tab-pane fade" id="disabled-tab-pane" role="tabpanel" aria-labelledby="disabled-tab" tabindex="0">...</div> --}}

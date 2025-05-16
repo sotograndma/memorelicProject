@@ -48,6 +48,8 @@ return new class extends Migration {
             // Stok dan retur
             $table->integer('stock')->default(1); // Stok barang
             $table->enum('returns_package', ['30-Day Refund / Replacement', '7-Day Refund Only', 'No Return / Final Sale'])->nullable(); // Return policy
+
+            $table->unsignedInteger('sold_count')->default(0); // Jumlah barang terjual
             
             $table->timestamps();
         });

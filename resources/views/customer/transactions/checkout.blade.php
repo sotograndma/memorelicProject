@@ -10,13 +10,38 @@
                 <form action="{{ route('customer.checkout.process', ['item_id' => $auction ? $auction->id : $item->id]) }}" method="POST">
                     @csrf
                     <input type="hidden" name="type" value="{{ $auction ? 'auction' : 'item' }}">
+                    @if (!$auction)
+                        <input type="hidden" name="quantity" value="{{ $quantity }}">
+                    @endif
 
                     <div class="d-flex justify-content-between">
                         <div style="width: 100%" class="me-3">
+                            @php
+                                $defaultAddress = Auth::user()->userable->locations ?? '';
+                            @endphp
+
                             <div class="bg-white p-3 rounded-xl mb-4">
                                 <h3 class="font-semibold mb-3">Alamat Pengiriman</h3>
-                                <textarea name="shipping_address" required class="w-full border p-2 rounded"
-                                    placeholder="Masukkan alamat lengkap pengiriman..."></textarea>
+
+                                <!-- Default Alamat -->
+                                <div id="defaultAddressBlock">
+                                    <p><i class="bi bi-geo-alt-fill text-success"></i> <strong>Rumah • {{ Auth::user()->name }}</strong></p>
+                                    <p>{{ $defaultAddress }}</p>
+                                    <button type="button" class="btn btn-outline-secondary btn-sm mt-2" onclick="toggleAddressEdit(true)">Ganti</button>
+                                </div>
+
+                                <!-- Alamat Custom -->
+                                <div id="customAddressBlock" style="display: none;">
+                                    <textarea name="shipping_address" class="form-control mb-2" rows="3"
+                                        placeholder="Masukkan alamat lengkap pengiriman..."></textarea>
+
+                                    <div class="d-flex justify-content-start gap-2">
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="toggleAddressEdit(false)">Batal</button>
+                                    </div>
+                                </div>
+
+                                <!-- Input tersembunyi jika pakai default -->
+                                <input type="hidden" name="shipping_address" id="hiddenShippingAddress" value="{{ $defaultAddress }}">
                             </div>
 
                             <!-- Detail Produk -->
@@ -27,7 +52,11 @@
                                         class="w-20 h-20 object-cover rounded mr-4">
                                     <div>
                                         <p class="text-lg fw-bold">{{ $auction ? $auction->name : $item->name }}</p>
-                                        <p class="fs-6">Rp {{ number_format($totalPrice, 0, ',', '.') }}</p>
+                                        @if (!$auction)
+                                            <p class="mb-0">Jumlah: {{ $quantity }}</p>
+                                            <p class="fs-6">Harga Satuan: Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+                                        @endif
+                                        <p class="fs-6">Total Harga: Rp {{ number_format($totalPrice, 0, ',', '.') }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -45,10 +74,29 @@
                         </div>
                     </div>
                 </form>
-                
+
             </div>
         </div>
     </div>
 
     <div style="height: 800px"></div>
+
+<script>
+    function toggleAddressEdit(showInput) {
+        const defaultBlock = document.getElementById('defaultAddressBlock');
+        const customBlock = document.getElementById('customAddressBlock');
+        const hiddenInput = document.getElementById('hiddenShippingAddress');
+
+        if (showInput) {
+            defaultBlock.style.display = 'none';
+            customBlock.style.display = 'block';
+            hiddenInput.disabled = true;
+        } else {
+            defaultBlock.style.display = 'block';
+            customBlock.style.display = 'none';
+            hiddenInput.disabled = false;
+        }
+    }
+</script>
+
 @endsection

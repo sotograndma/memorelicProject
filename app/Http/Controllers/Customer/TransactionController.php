@@ -17,10 +17,12 @@ class TransactionController extends Controller
     public function checkout(Request $request, $id)
     {
         $user = Auth::user();
-        $type = $request->query('type'); // Ambil dari query string ?type=item atau ?type=auction
+        $type = $request->query('type');
+        $quantity = $request->query('quantity', 1);
 
         $auction = null;
         $item = null;
+        $totalPrice = 0;
 
         if ($type === 'auction') {
             $auction = Auction::find($id);
@@ -33,7 +35,7 @@ class TransactionController extends Controller
             if (!$item) {
                 return redirect()->route('customer.dashboard')->with('error', 'Barang tidak ditemukan.');
             }
-            $totalPrice = $item->price;
+            $totalPrice = $item->price * $quantity;
         } else {
             return redirect()->route('customer.dashboard')->with('error', 'Tipe barang tidak valid.');
         }
@@ -41,6 +43,7 @@ class TransactionController extends Controller
         return view('customer.transactions.checkout', [
             'auction' => $auction,
             'item' => $item,
+            'quantity' => $quantity,
             'totalPrice' => $totalPrice
         ]);
     }
@@ -51,15 +54,14 @@ class TransactionController extends Controller
 
         $request->validate([
             'shipping_address' => 'required|string|max:255',
-            'type' => 'required|in:item,auction'
+            'type' => 'required|in:item,auction',
+            'quantity' => 'nullable|integer|min:1' // jika ingin support beli >1
         ]);
 
-        // Ambil tipe item
         $type = $request->type;
-
-        // Ambil data berdasarkan tipe
         $auction = null;
         $item = null;
+        $quantity = $request->quantity ?? 1;
 
         if ($type === 'auction') {
             $auction = Auction::find($id);
@@ -72,30 +74,47 @@ class TransactionController extends Controller
             if (!$item) {
                 return redirect()->route('customer.dashboard')->with('error', 'Barang tidak ditemukan.');
             }
-            $totalPrice = $item->price;
+
+            // Cek apakah stok cukup
+            if ($item->stock < $quantity) {
+                return redirect()->back()->with('error', 'Stok tidak mencukupi untuk jumlah yang dipilih.');
+            }
+
+            $totalPrice = $item->price * $quantity;
         }
 
-        // Buat kode pembayaran unik
         $paymentCode = 'PAY-' . strtoupper(substr(md5(time()), 0, 8));
 
         DB::beginTransaction();
         try {
-            // Buat transaksi baru
             $transaction = Transaction::create([
                 'customer_id' => $user->id,
                 'auction_id' => $auction ? $auction->id : null,
                 'item_id' => $item ? $item->id : null,
                 'total_price' => $totalPrice,
+                'quantity' => $quantity,
                 'status' => 'waiting_payment',
                 'payment_code' => $paymentCode,
                 'shipping_address' => $request->shipping_address,
             ]);
 
-            // Jika dari auction, tandai sebagai checkout selesai
             if ($auction) {
                 $auction->is_checkout_done = true;
                 $auction->status = 'sold';
                 $auction->save();
+            }
+
+            if ($item) {
+                // Kurangi stok
+                $item->stock -= $quantity;
+
+                // Jika stok habis, ubah status jadi 'sold'
+                if ($item->stock <= 0) {
+                    $item->status = 'sold';
+                    $item->stock = 0; // pastikan tidak negatif
+                }
+
+                $item->save();
             }
 
             DB::commit();
@@ -106,6 +125,7 @@ class TransactionController extends Controller
             return redirect()->route('customer.dashboard')->with('error', 'Terjadi kesalahan saat checkout.');
         }
     }
+
 
     // Halaman Kode Pembayaran
     public function paymentCode($transaction_id)
@@ -129,7 +149,16 @@ class TransactionController extends Controller
         // Perbarui status transaksi menjadi 'completed'
         $transaction->update(['status' => 'completed']);
 
-        // Cek apakah ini transaksi dari item biasa atau auction
+        if ($transaction->item_id) {
+            $item = $transaction->item;
+
+            // Tambahkan jumlah terjual
+            $item->sold_count += $transaction->quantity;
+
+            // Cek status tetap (sudah dihandle saat checkout)
+            $item->save();
+        }
+
         if ($transaction->auction_id) {
             // Jika dari auction, update status auction menjadi sold
             $auction = Auction::findOrFail($transaction->auction_id);
@@ -137,12 +166,18 @@ class TransactionController extends Controller
             $auction->is_checkout_done = true;
             $auction->save();
         } elseif ($transaction->item_id) {
-            // Jika dari item biasa, update status item menjadi sold
-            $transaction->item->update(['status' => 'sold']);
+            // Tidak perlu ubah status item karena sudah ditangani di processCheckout()
+            // Namun jika Anda ingin jaga-jaga untuk sinkronisasi:
+            $item = Item::findOrFail($transaction->item_id);
+            if ($item->stock <= 0 && $item->status != 'sold') {
+                $item->status = 'sold';
+                $item->save();
+            }
         }
 
         return view('customer.transactions.payment_completed', compact('transaction'));
     }
+
 
     // Halaman Riwayat Transaksi
     public function transactionHistory(Request $request)
@@ -169,9 +204,25 @@ class TransactionController extends Controller
     // Halaman Barang Terjual untuk Penjual
     public function soldItems()
     {
-        // Ambil barang yang statusnya 'sold' dan memiliki transaksi
-        $soldItems = Item::where('status', 'sold')->with('transactions.customer')->get();
+        $user = Auth::user();
 
-        return view('customer.items.sold_items', compact('soldItems'));
+        // Barang biasa milik penjual (customer)
+        $soldItems = Item::where('customers_id', $user->userable_id)
+            ->whereHas('transactions', function ($query) {
+                $query->where('status', 'completed');
+            })
+            ->with(['transactions' => function ($q) {
+                $q->where('status', 'completed')->with('customer');
+            }])
+            ->get();
+
+        // Barang lelang milik penjual (customer)
+        $soldAuctions = Auction::where('customers_id', $user->userable_id)
+            ->where('status', 'sold')
+            ->where('is_checkout_done', true)
+            ->with(['transaction.customer']) // relasi tunggal
+            ->get();
+
+        return view('customer.items.sold_items', compact('soldItems', 'soldAuctions'));
     }
 }

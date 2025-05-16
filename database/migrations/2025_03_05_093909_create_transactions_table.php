@@ -15,6 +15,9 @@ return new class extends Migration {
             $table->enum('status', ['pending', 'waiting_payment', 'processing', 'completed', 'failed'])->default('pending');
             $table->string('payment_code')->nullable();
             $table->text('shipping_address');
+
+            $table->unsignedInteger('quantity')->default(1); // Jumlah yang dibeli
+
             $table->timestamps();
 
             $table->foreign('customer_id')->references('id')->on('users')->onDelete('cascade');

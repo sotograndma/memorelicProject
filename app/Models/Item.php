@@ -41,6 +41,7 @@ class Item extends Model
 
         // Stok dan retur
         'stock',
+        'sold_count',
         'returns_package',
     ];
 

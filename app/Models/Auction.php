@@ -100,4 +100,10 @@ class Auction extends Model
     {
         return $this->isUserWinner($userId) && !$this->is_checkout_done;
     }
+
+    public function transaction()
+    {
+        return $this->hasOne(Transaction::class, 'auction_id');
+    }
+
 }
