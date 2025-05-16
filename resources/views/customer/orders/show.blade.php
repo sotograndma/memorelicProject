@@ -1,80 +1,167 @@
 @extends('customer.dashboard')
 
 @section('content')
-    <div class="container mx-auto mt-6">
-        <div class="flex flex-col md:flex-row gap-6">
 
-            <!-- Gambar Produk -->
-            <div class="w-full md:w-1/2">
-                <div class="border rounded-lg overflow-hidden">
-                    <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
-                        class="w-full h-96 object-cover">
+    <div class="d-flex justify-content-center mt-5">
+        <div style="width: 1200px">
+
+            <div class="d-flex justify-content-between">
+
+                <div class="bg_jual-beli me-3">
+                    <div class="flex flex-col md:flex-row gap-6">
+    
+                        <!-- Gambar Produk -->
+                        <div class="w-full md:w-1/2">
+                            <div class="border rounded-lg overflow-hidden">
+                                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
+                                    class="w-full h-full object-cover">
+                            </div>
+                            <div class="flex gap-2 mt-2">
+                                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
+                                    class="w-20 h-20 border rounded-lg object-cover">
+                            </div>
+                        </div>
+    
+                        <!-- Informasi Produk -->
+                        <div class="w-full md:w-1/2">
+                            <p class="fs-5">{{ $item->name }}</p>
+                            <p class="text-neutral-500">Terjual 250+ | 5 (166 rating)</p>
+    
+                            <p class="fw-bold mt-3 fs-2 main_color">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+    
+                            <ul class="nav nav-underline mt-4" id="pills-tab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active color_main" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Description</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link color_main" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Detail</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link color_main" id="pills-Specification-tab" data-bs-toggle="pill" data-bs-target="#pills-Specification" type="button" role="tab" aria-controls="pills-Specification" aria-selected="false">Specification</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content mt-3" id="pills-tabContent">
+                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
+                                    <p class="main_color">{{ $item->description }}</p>
+                                </div>
+                                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
+                                    <p class="main_color"><strong>Condition:</strong> Brand New</p>
+                                    <p class="main_color"><strong>Min. Order:</strong> 1 Piece</p>
+                                </div>
+                                <div class="tab-pane fade" id="pills-Specification" role="tabpanel" aria-labelledby="pills-Specification-tab" tabindex="0">
+    
+                                </div>
+                            </div>
+    
+                            <!-- Info Pengiriman -->
+                            <div class="mt-5 main_color">
+                                <p class="fs-5 fw-bold mb-2">Shipping</p>
+                                <div class="d-flex gap-2 align-items-center mt-2">
+                                    <i class="bi bi-geo-alt"></i>
+                                    <p class="">Sent from <span class="fw-bold">South Jakarta Administrative City</span></p>
+                                </div>
+                                <div class="d-flex gap-2 align-items-center mt-2">
+                                    <i class="bi bi-truck"></i>
+                                    <div>
+                                        <p>Shipping costs start from <span class="fw-bold">Rp6,500</span></p>
+                                        <p>Estimated arrival in <span class="fw-bold">2-3 days</span></p>
+                                    </div>
+                                </div>
+                            </div>
+    
+                        </div>
+                    </div>
                 </div>
-                <div class="flex gap-2 mt-2">
-                    <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
-                        class="w-20 h-20 border rounded-lg object-cover">
-                    <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
-                        class="w-20 h-20 border rounded-lg object-cover">
-                    <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
-                        class="w-20 h-20 border rounded-lg object-cover">
+
+                <div style="border-radius: 10px" class="bg_main text-white p-4">
+                    <p class="fw-bold fs-2 main_color">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+                    <p class="mt-1 main_color">Delivery <span class="fw-bold">Tuesday, May 27.</span></p>
+                    <div class="d-flex gap-2 align-items-center mt-4">
+                        <i class="bi bi-geo-alt"></i>
+                        <p class="">deliver to <br><span class="fw-bold underline">my home</span></p>
+                    </div>
+
+                    <div class="mt-4">
+                        <p class="text-green-300 fw-bold fs-5">In Stock</p>
+                        <p class="italic text-green-500">Stock: 5 remaining</p>
+                    </div>
+
+                    <div class="dropdown mt-4 d-flex bg-neutral-700 border-1 border-neutral-500" style="display: inline-block; border-radius: 12px; padding: 5px 10px;width: 100%;">
+                        <p class="text-neutral-400" for="quantity" style="margin-right: 5px;">Quantity:</p>
+                        <select id="quantity" class="form-select form-select-sm text-neutral-400" style="display: inline-block; width: auto; border: none; background: transparent; padding: 0; box-shadow: none;">
+                            <option value="1" selected>1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
+                    </div>
+
+                    <div class="my-4">
+                        <hr>
+                    </div>
+
+                    <div class="mt-4">
+                        <button style="font-size: 0.85em; width: 100%;" class="btn btn-mainOutline">Add to Cart</button>
+                        <a href="{{ route('customer.checkout', ['item_id' => $item->id, 'type' => 'item']) }}"><button style="font-size: 0.85em; width: 100%;" class="btn btn-main mt-2">Buy Now</button></a>
+                        
+                    </div>
+
+                    <div class="mt-4">
+                        <table>
+                            <tr>
+                                <td>
+                                    <p>ships from:</p>
+                                </td>
+                                <td>
+                                    <p class="ms-4 fw-semibold">memorelic</p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <p>sold by:</p>
+                                </td>
+                                <td>
+                                    <p class="ms-4 fw-semibold">user</p>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td>
+                                    <p>returns:</p>
+                                </td>
+                                <td>
+                                    <p class="ms-4 fw-semibold">30-day refund <br>/replacement</p>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <div class="my-4">
+                        <hr>
+                    </div>
+
+                    <div class="d-flex gap">
+                        <button style="font-size: 0.85em; width: 100%;" class="btn btn-danger mt-2 me-2">
+                            <div class="d-flex gap-2 align-items-center">
+                                <i style="position: relative; top: 1px" class="bi bi-heart-fill"></i>
+                                Wishlist
+                            </div>
+                        </button>
+                        <button style="font-size: 0.85em; width: 100%;" class="btn btn-warning mt-2">
+                            <div class="d-flex gap-2 align-items-center">
+                                <i style="position: relative; top: 1px" class="bi bi-share-fill"></i>
+                                Share
+                            </div>
+                        </button>
+                    </div>
+
                 </div>
             </div>
 
-            <!-- Informasi Produk -->
-            <div class="w-full md:w-1/2">
-                <h2 class="text-2xl font-bold">{{ $item->name }}</h2>
-                <p class="text-gray-500">Terjual 250+ | ⭐ 5 (166 rating)</p>
-
-                <p class="text-red-500 font-bold text-3xl mt-2">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-
-                <div class="mt-4 border-t pt-4">
-                    <h3 class="font-semibold">Detail</h3>
-                    <p class="text-gray-600"><strong>Kondisi:</strong> Baru</p>
-                    <p class="text-gray-600"><strong>Min. Pemesanan:</strong> 1 Buah</p>
-                    <p class="text-gray-600"><strong>Deskripsi:</strong> {{ $item->description }}</p>
-                </div>
-
-                <!-- Tombol Interaksi -->
-                <div class="mt-6 flex flex-wrap gap-3">
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">🔔 Aktifkan
-                        Notifikasi</button>
-                    <button class="bg-gray-500 text-white px-4 py-2 rounded shadow hover:bg-gray-600">💬 Chat
-                        Penjual</button>
-                    <button class="bg-pink-500 text-white px-4 py-2 rounded shadow hover:bg-pink-600">❤️ Wishlist</button>
-                </div>
-
-                <!-- Form Order -->
-                <div class="mt-6 border-t pt-4">
-                    <h3 class="font-semibold mb-2">Atur Jumlah dan Catatan</h3>
-                    <div class="flex items-center">
-                        <button class="bg-gray-300 text-gray-700 px-3 py-1 rounded-l">-</button>
-                        <input type="number" value="1" min="1"
-                            class="w-16 text-center border-t border-b border-gray-300">
-                        <button class="bg-gray-300 text-gray-700 px-3 py-1 rounded-r">+</button>
-                    </div>
-                    <p class="text-sm text-gray-500 mt-2">Stok: <strong>151</strong> | Max. pembelian: 76 pcs</p>
-                    <p class="text-lg font-bold mt-2">Subtotal: Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-
-                    <div class="mt-4 flex gap-3">
-                        <button class="bg-yellow-500 text-white px-6 py-2 rounded shadow hover:bg-yellow-600">+
-                            Keranjang</button>
-                        <!-- Tombol Beli Langsung -->
-                        <a href="{{ route('customer.checkout', ['item_id' => $item->id]) }}"
-                            class="bg-green-500 text-white px-6 py-2 rounded shadow hover:bg-green-600">
-                            Beli Langsung
-                        </a>
-                    </div>
-                </div>
-
-                <!-- Info Pengiriman -->
-                <div class="mt-6 border-t pt-4">
-                    <h3 class="font-semibold mb-2">Pengiriman</h3>
-                    <p class="text-gray-600">📍 Dikirim dari <strong>Jakarta Utara</strong></p>
-                    <p class="text-gray-600">🚚 Ongkir mulai Rp6.500</p>
-                    <p class="text-gray-600">📅 Estimasi tiba: 1 - 3 Mar</p>
-                </div>
-
-            </div>
         </div>
     </div>
+
+    <div style="height: 500px"></div>
 @endsection

@@ -1,26 +1,110 @@
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
+    background: linear-gradient(160deg, #b3b3b3, #ffffff);
 }
 
 ul {
     font-weight: 400 !important;
     padding: 0;
-    margin: 0; 
+    margin: 0;
 }
 
 li {
     font-weight: 400 !important;
     font-size: 0.85em !important;
-    list-style: none; 
-    margin: 0; 
-    padding: 0; 
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+i {
+    margin: 0;
+    padding: 0;
 }
 
 p {
     font-weight: 400 !important;
     font-size: 0.85em !important;
     padding: 0;
-    margin: 0; 
+    margin: 0;
+}
+
+hr {
+    height: 1px;
+    margin: 0;
+    padding: 0;
+}
+
+.color_main {
+    color: #363636 !important;
+}
+
+.color_cream {
+    color: #f5f1e3 !important;
+}
+
+.color_darkCream {
+    color: #cfccc1 !important;
+}
+
+.color_maroonMain {
+    color: #6d2932 !important;
+}
+
+.color_darkMaroon {
+    color: #501e24 !important;
+}
+
+/* background jual lelang */
+.bg_jualLelang {
+    background: linear-gradient(160deg, #202020, #363636);
+    border-radius: 10px;
+    padding: 10px 10px;
+    border: #505050 1px solid;
+}
+
+/* background category */
+.bg_category {
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    padding: 10px 10px;
+    border: #e6e6e6 1px solid;
+}
+
+/* background jual/beli */
+.bg_jual-beli {
+    background-color: #e6e6e6;
+    border-radius: 10px;
+    padding: 15px 15px;
+    border: #e6e6e6 1px solid;
+}
+
+/* carousel */
+
+.carousel-item_navbar {
+    height: 50vh;
+    min-height: 300px;
+    background: no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+}
+
+.carousel-item_navbar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+}
+
+.carousel-item_navbar img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
 }
 
 /* Dropdown Hover Support */
@@ -42,17 +126,19 @@ p {
     justify-content: space-between;
 }
 
+.bg_main {
+    background-color: #202020;
+    border-color: #505050 !important;
+}
+
 .topbar {
-    width: 1400px;
-    background: linear-gradient(160deg, #202020, #363636); 
-    color: #ffffff !important; 
-    backdrop-filter: blur(10px); 
-    -webkit-backdrop-filter: blur(10px); 
-    box-shadow: rgba(61, 61, 61, 0.733) 0px 0px 20px; 
-    border: 1px solid rgba(146, 146, 146, 0.63); 
-    border-radius: 100px !important;
-    margin-bottom: 30px;
+    width: 100%;
+    background: linear-gradient(160deg, #202020, #363636);
+    color: #ffffff !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
     padding: 10px 35px !important;
+    z-index: 99999;
 }
 
 .bg_dropdown {
@@ -66,35 +152,83 @@ p {
     border-radius: 5px !important;
 }
 
+.btn-jual {
+    background-color: #202020;
+    border-color: #202020;
+    font-size: small;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 5px 20px 5px 20px;
+}
+
+.btn-jual:hover {
+    background-color: #202020;
+    color: #363636;
+    border-color: #202020;
+    box-shadow: #202020 0px 0px 10px;
+}
+
 /* btn main */
 
-.btn-primary{
+.btn-mainOutline {
+    background-color: #f5f1e3;
+    border-color: #f5f1e3;
+    color: #6d2932;
+    font-weight: 600;
+    border-radius: 15px;
+    padding: 8px 25px 8px 25px;
+}
+
+.btn-mainOutline:hover {
+    background-color: #f5f1e3;
+    color: #6d2932;
+    border-color: #f5f1e3;
+    box-shadow: #f5f1e3 0px 0px 10px;
+}
+
+.btn-main {
+    background-color: #6d2932;
+    border-color: #6d2932;
+    color: #f5f1e3;
+    font-weight: 600;
+    border-radius: 15px;
+    padding: 8px 25px 8px 25px;
+}
+
+.btn-main:hover {
+    background-color: #6d2932;
+    color: #f5f1e3;
+    border-color: #6d2932;
+    box-shadow: #6d2932 0px 0px 10px;
+}
+
+.btn-primary {
     background-color: #202020;
     border-color: #202020;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
     background-color: #202020;
     border-color: #202020;
     box-shadow: #202020 0px 0px 10px;
 }
 
-.btn-secondary{
+.btn-secondary {
     background-color: #505050;
     border-color: #505050;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-secondary:hover{
+.btn-secondary:hover {
     background-color: #505050;
     border-color: #505050;
     box-shadow: #505050 0px 0px 10px;
 }
 
-.btn-light{
+.btn-light {
     background-color: #ececec;
     border-color: #ececec;
     color: #202020;
@@ -102,7 +236,7 @@ p {
     padding: 8px 25px 8px 25px;
 }
 
-.btn-light:hover{
+.btn-light:hover {
     background-color: #ececec;
     border-color: #ececec;
     color: #202020;
@@ -111,50 +245,50 @@ p {
 
 /* btn color */
 
-.btn-danger{
-    background-color: #FFDDD8;
-    border-color: #FFDDD8;
-    color: #FF6A55;
+.btn-danger {
+    background-color: #ffddd8;
+    border-color: #ffddd8;
+    color: #ff6a55;
     font-weight: 600;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-danger:hover{
-    background-color: #FF6A55;
-    border-color: #FF6A55;
-    color: #FFDDD8;
-    box-shadow: #FF6A55 0px 0px 10px;
+.btn-danger:hover {
+    background-color: #ff6a55;
+    border-color: #ff6a55;
+    color: #ffddd8;
+    box-shadow: #ff6a55 0px 0px 10px;
 }
 
-.btn-warning{
-    background-color: #FFF2BC;
-    border-color: #FFF2BC;
+.btn-warning {
+    background-color: #fff2bc;
+    border-color: #fff2bc;
     color: #dfbb2e;
     font-weight: 600;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-warning:hover{
+.btn-warning:hover {
     background-color: #dfbb2e;
     border-color: #dfbb2e;
-    color: #FFF2BC;
+    color: #fff2bc;
     box-shadow: #dfbb2e 0px 0px 10px;
 }
 
-.btn-success{
-    background-color: #DFFFD3 ;
-    border-color: #DFFFD3 ;
-    color: #83BF6E;
+.btn-success {
+    background-color: #dfffd3;
+    border-color: #dfffd3;
+    color: #83bf6e;
     font-weight: 600;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-success:hover{
-    background-color: #83BF6E ;
-    color: #DFFFD3;
-    border-color: #83BF6E ;
-    box-shadow: #83BF6E 0px 0px 10px;
+.btn-success:hover {
+    background-color: #83bf6e;
+    color: #dfffd3;
+    border-color: #83bf6e;
+    box-shadow: #83bf6e 0px 0px 10px;
 }

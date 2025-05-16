@@ -78,7 +78,7 @@ class BidController extends Controller
                 $auction->is_checkout_done = true;
                 $auction->save();
                 DB::commit();
-                return redirect()->route('customer.checkout', $auction->id)
+                return redirect()->route('customer.checkout', ['item_id' => $auction->id, 'type' => 'auction'])
                     ->with('success', 'Anda berhasil membeli barang ini! Silakan lanjut ke checkout.');
             }
 

@@ -66,6 +66,14 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 // Halaman khusus customer
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('customer.dashboard');
+    
+    Route::get('/customer/home', function () {
+        return view('customer.home');
+    })->name('customer.home');
+
+    Route::get('/customer/aboutus', function () {
+        return view('customer.aboutus');
+    })->name('customer.aboutus');
 
     // Item (Jual Barang Langsung)
     Route::resource('customer/items', ItemController::class)->names([

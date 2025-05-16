@@ -14,20 +14,29 @@ use Illuminate\Support\Facades\DB;
 class TransactionController extends Controller
 {
     // Halaman Checkout
-    public function checkout($id)
+    public function checkout(Request $request, $id)
     {
         $user = Auth::user();
+        $type = $request->query('type'); // Ambil dari query string ?type=item atau ?type=auction
 
-        // Cek apakah ID yang dikirim adalah barang dari auction atau item biasa
-        $auction = Auction::where('id', $id)->where('highest_bidder_id', $user->userable_id)->first();
-        $item = Item::find($id);
+        $auction = null;
+        $item = null;
 
-        if (!$auction && !$item) {
-            return redirect()->route('customer.dashboard')->with('error', 'Barang tidak ditemukan.');
+        if ($type === 'auction') {
+            $auction = Auction::find($id);
+            if (!$auction) {
+                return redirect()->route('customer.dashboard')->with('error', 'Barang lelang tidak ditemukan.');
+            }
+            $totalPrice = $auction->highest_bid ?? $auction->starting_bid;
+        } elseif ($type === 'item') {
+            $item = Item::find($id);
+            if (!$item) {
+                return redirect()->route('customer.dashboard')->with('error', 'Barang tidak ditemukan.');
+            }
+            $totalPrice = $item->price;
+        } else {
+            return redirect()->route('customer.dashboard')->with('error', 'Tipe barang tidak valid.');
         }
-
-        // Hitung total harga berdasarkan tipe barang (auction atau item biasa)
-        $totalPrice = $auction ? $auction->highest_bid : $item->price;
 
         return view('customer.transactions.checkout', [
             'auction' => $auction,
@@ -42,18 +51,29 @@ class TransactionController extends Controller
 
         $request->validate([
             'shipping_address' => 'required|string|max:255',
+            'type' => 'required|in:item,auction'
         ]);
 
-        // Cek apakah barang dari lelang atau item biasa
-        $auction = Auction::where('id', $id)->where('highest_bidder_id', $user->userable_id)->first();
-        $item = Item::find($id);
+        // Ambil tipe item
+        $type = $request->type;
 
-        if (!$auction && !$item) {
-            return redirect()->route('customer.dashboard')->with('error', 'Barang tidak ditemukan.');
+        // Ambil data berdasarkan tipe
+        $auction = null;
+        $item = null;
+
+        if ($type === 'auction') {
+            $auction = Auction::find($id);
+            if (!$auction) {
+                return redirect()->route('customer.dashboard')->with('error', 'Barang lelang tidak ditemukan.');
+            }
+            $totalPrice = $auction->highest_bid ?? $auction->starting_bid;
+        } else {
+            $item = Item::find($id);
+            if (!$item) {
+                return redirect()->route('customer.dashboard')->with('error', 'Barang tidak ditemukan.');
+            }
+            $totalPrice = $item->price;
         }
-
-        // Hitung total harga
-        $totalPrice = $auction ? $auction->highest_bid : $item->price;
 
         // Buat kode pembayaran unik
         $paymentCode = 'PAY-' . strtoupper(substr(md5(time()), 0, 8));
@@ -62,7 +82,7 @@ class TransactionController extends Controller
         try {
             // Buat transaksi baru
             $transaction = Transaction::create([
-                'customer_id' => $user->userable_id,
+                'customer_id' => $user->id,
                 'auction_id' => $auction ? $auction->id : null,
                 'item_id' => $item ? $item->id : null,
                 'total_price' => $totalPrice,
@@ -74,7 +94,7 @@ class TransactionController extends Controller
             // Jika dari auction, tandai sebagai checkout selesai
             if ($auction) {
                 $auction->is_checkout_done = true;
-                $auction->status = 'sold'; // Update status menjadi sold
+                $auction->status = 'sold';
                 $auction->save();
             }
 
@@ -82,6 +102,7 @@ class TransactionController extends Controller
             return redirect()->route('customer.payment.code', ['transaction_id' => $transaction->id]);
         } catch (\Exception $e) {
             DB::rollBack();
+            dd('GAGAL TRANSAKSI:', $e->getMessage());
             return redirect()->route('customer.dashboard')->with('error', 'Terjadi kesalahan saat checkout.');
         }
     }
@@ -129,7 +150,7 @@ class TransactionController extends Controller
         $status = $request->query('status', 'all');
 
         // Ambil transaksi dengan item atau auction
-        $query = Transaction::where('customer_id', Auth::user()->userable_id)->with(['item', 'auction']);
+        $query = Transaction::where('customer_id', Auth::user()->id)->with(['item', 'auction']);
 
         // Jangan filter status jika 'all', agar semua transaksi ditampilkan
         if ($status !== 'all') {
