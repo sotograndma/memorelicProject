@@ -1,41 +1,44 @@
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: "Poppins", sans-serif;
     background-color: #202020;
 }
 
 ul {
     font-weight: 400 !important;
     padding: 0;
-    margin: 0; 
+    margin: 0;
 }
 
 li {
     font-weight: 400 !important;
     font-size: 0.85em !important;
-    list-style: none; 
-    margin: 0; 
-    padding: 0; 
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-label, textarea, input {
+label,
+textarea,
+input {
     font-weight: 400 !important;
     font-size: 0.85em !important;
     padding: 0;
-    margin: 0; 
+    margin: 0;
 }
 
 p {
     font-weight: 400 !important;
     font-size: 0.85em !important;
     padding: 0;
-    margin: 0; 
+    margin: 0;
 }
 
-th, td {
+th,
+td {
     font-weight: 400 !important;
     font-size: 0.85em !important;
     padding: 0;
-    margin: 0; 
+    margin: 0;
 }
 
 .sidebar {
@@ -78,12 +81,12 @@ th, td {
 }
 
 .topbar {
-    background: linear-gradient(160deg, #202020, #363636); 
-    color: #ffffff !important; 
-    backdrop-filter: blur(10px); 
-    -webkit-backdrop-filter: blur(10px); 
-    box-shadow: rgba(61, 61, 61, 0.733) 0px 0px 20px; 
-    border: 1px solid rgba(146, 146, 146, 0.63); 
+    background: linear-gradient(160deg, #202020, #363636);
+    color: #ffffff !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: rgba(61, 61, 61, 0.733) 0px 0px 20px;
+    border: 1px solid rgba(146, 146, 146, 0.63);
     border-radius: 12px !important;
     margin-bottom: 30px;
     font-weight: 500;
@@ -92,7 +95,7 @@ th, td {
 
 /* btn main */
 
-.btn-primary{
+.btn-primary {
     font-size: 0.85em !important;
     background-color: #202020;
     border-color: #202020;
@@ -100,13 +103,13 @@ th, td {
     padding: 8px 25px 8px 25px;
 }
 
-.btn-primary:hover{
+.btn-primary:hover {
     background-color: #202020;
     border-color: #202020;
     box-shadow: #202020 0px 0px 10px;
 }
 
-.btn-secondary{
+.btn-secondary {
     font-size: 0.85em !important;
     background-color: #505050;
     border-color: #505050;
@@ -114,13 +117,13 @@ th, td {
     padding: 8px 25px 8px 25px;
 }
 
-.btn-secondary:hover{
+.btn-secondary:hover {
     background-color: #505050;
     border-color: #505050;
     box-shadow: #505050 0px 0px 10px;
 }
 
-.btn-light{
+.btn-light {
     font-size: 0.85em !important;
     background-color: #ececec;
     border-color: #ececec;
@@ -129,7 +132,7 @@ th, td {
     padding: 8px 25px 8px 25px;
 }
 
-.btn-light:hover{
+.btn-light:hover {
     background-color: #ececec;
     border-color: #ececec;
     color: #202020;
@@ -138,53 +141,53 @@ th, td {
 
 /* btn color */
 
-.btn-danger{
+.btn-danger {
     font-size: 0.85em !important;
-    background-color: #FFDDD8;
-    border-color: #FFDDD8;
-    color: #FF6A55;
+    background-color: #ffddd8;
+    border-color: #ffddd8;
+    color: #ff6a55;
     font-weight: 600;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-danger:hover{
-    background-color: #FF6A55;
-    border-color: #FF6A55;
-    color: #FFDDD8;
-    box-shadow: #FF6A55 0px 0px 10px;
+.btn-danger:hover {
+    background-color: #ff6a55;
+    border-color: #ff6a55;
+    color: #ffddd8;
+    box-shadow: #ff6a55 0px 0px 10px;
 }
 
-.btn-warning{
+.btn-warning {
     font-size: 0.85em !important;
-    background-color: #FFF2BC;
-    border-color: #FFF2BC;
+    background-color: #fff2bc;
+    border-color: #fff2bc;
     color: #dfbb2e;
     font-weight: 600;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-warning:hover{
+.btn-warning:hover {
     background-color: #dfbb2e;
     border-color: #dfbb2e;
-    color: #FFF2BC;
+    color: #fff2bc;
     box-shadow: #dfbb2e 0px 0px 10px;
 }
 
-.btn-success{
+.btn-success {
     font-size: 0.85em !important;
-    background-color: #DFFFD3 ;
-    border-color: #DFFFD3 ;
-    color: #83BF6E;
+    background-color: #dfffd3;
+    border-color: #dfffd3;
+    color: #83bf6e;
     font-weight: 600;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-success:hover{
-    background-color: #83BF6E ;
-    color: #DFFFD3;
-    border-color: #83BF6E ;
-    box-shadow: #83BF6E 0px 0px 10px;
+.btn-success:hover {
+    background-color: #83bf6e;
+    color: #dfffd3;
+    border-color: #83bf6e;
+    box-shadow: #83bf6e 0px 0px 10px;
 }

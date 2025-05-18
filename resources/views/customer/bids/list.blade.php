@@ -5,14 +5,15 @@
         <div style="width: 1200px">
 
             <div class="bg-white p-4 rounded-xl">
-                <p class="fw-bold color_main fs-5">Daftar Barang yang Pernah Anda Bid</p>
+                <p class="fw-bold">Daftar Barang yang Pernah Anda Bid</p>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, sapiente!</p>
 
                 @if ($bids->isEmpty())
                     <p class="color_main mt-4">Anda belum pernah melakukan bid.</p>
                 @else
                     <table class="w-full mt-4 border-collapse border border-neutral-200">
                         <thead>
-                            <tr style="font-size: 0.85em" class="bg-neutral-300">
+                            <tr style="font-size: 0.85em" class="bg-neutral-100">
                                 <th class="border border-neutral-500 px-4 py-2 text-left">Nama Barang</th>
                                 <th class="border border-neutral-500 px-4 py-2 text-center">Bid Anda</th>
                                 <th class="border border-neutral-500 px-4 py-2 text-center">Status</th>
@@ -58,11 +59,13 @@
                     </table>
                 @endif
 
-                <a style="font-size: 0.85em" href="{{ route('customer.bids.index') }}" class="block text-start mt-1 text-neutral-500 hover:text-neutral-700">
+                {{-- <a style="font-size: 0.85em" href="{{ route('customer.bids.index') }}" class="block text-start mt-1 text-neutral-500 hover:text-neutral-700">
                     Kembali ke Daftar Lelang
-                </a>
+                </a> --}}
             </div>
 
         </div>
     </div>
+
+    <div style="height: 500px"></div>
 @endsection

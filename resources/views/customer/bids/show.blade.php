@@ -41,31 +41,49 @@
                                 <li class="nav-item" role="presentation">
                                     <button class="nav-link color_main" id="specification-tab" data-bs-toggle="pill" data-bs-target="#specification" type="button" role="tab" aria-controls="specification" aria-selected="true">Specification</button>
                                 </li>
-                                <li class="nav-item" role="presentation">
-                                    <button class="nav-link color_main" id="status-tab" data-bs-toggle="pill" data-bs-target="#status" type="button" role="tab" aria-controls="status" aria-selected="false">Status</button>
-                                </li>
                             </ul>
 
                             <div class="tab-content mt-3" id="auction-tabContent">
                                 <div class="tab-pane fade show active" id="description" role="tabpanel">
                                     <p class="main_color">{{ $auction->description }}</p>
                                 </div>
-                                <div class="tab-pane fade show active" id="detail" role="tabpanel">
-
-                                </div>
-                                <div class="tab-pane fade show active" id="specification" role="tabpanel">
-
-                                </div>
-                                <div class="tab-pane fade" id="status" role="tabpanel">
-                                    <p class="main_color">Status Lelang:
-                                        @if ($auction->status == 'ongoing')
-                                            <span class="text-green-500 fw-bold">Sedang Berlangsung</span>
-                                        @elseif ($auction->status == 'ended')
-                                            <span class="text-red-500 fw-bold">Lelang Selesai</span>
-                                        @elseif ($auction->status == 'sold')
-                                            <span class="text-neutral-700 fw-bold">Barang Terjual</span>
+                                <div class="tab-pane fade show" id="detail" role="tabpanel">
+                                    <p><strong>Minimum Incremental Bid:</strong> Rp {{ number_format($auction->minimum_increment, 0, ',', '.') }}</p>
+                                    <p><strong>Harga Beli Sekarang:</strong>
+                                        @if ($auction->buy_now_price)
+                                            Rp {{ number_format($auction->buy_now_price, 0, ',', '.') }}
+                                        @else
+                                            <span class="text-gray-400">-</span>
                                         @endif
                                     </p>
+                                    <hr class="my-2" style="width: 50px">
+                                    <p><strong>Waktu Mulai:</strong> {{ date('d M Y H:i', strtotime($auction->start_time)) }}</p>
+                                    <p><strong>Waktu Berakhir:</strong> {{ date('d M Y H:i', strtotime($auction->end_time)) }}</p>
+                                    <hr class="my-2" style="width: 50px">
+                                    <p><strong>Tahun Pembuatan:</strong> {{ $auction->year_of_origin ? date('Y', strtotime($auction->year_of_origin)) : '-' }}</p>
+                                    <p><strong>Asal Daerah:</strong> {{ $auction->region_of_origin ?? '-' }}</p>
+                                    <p><strong>Pembuat:</strong> {{ $auction->maker ?? '-' }}</p>
+                                    <hr class="my-2" style="width: 50px">
+                                    <p><strong>Kategori:</strong> {{ $auction->category ?? '-' }}</p>
+                                    <p><strong>Tingkat Kelangkaan:</strong> {{ $auction->rarity_level ?? '-' }}</p>
+                                    <p><strong>Informasi Restorasi:</strong> {{ $auction->restoration_info ?? '-' }}</p>
+                                    <p><strong>Provenance / Riwayat Kepemilikan:</strong> {{ $auction->provenance ?? '-' }}</p>
+                                    <p><strong>Catatan Kerusakan:</strong> {{ $auction->damage_notes ?? '-' }}</p>
+                                </div>
+                                <div class="tab-pane fade show" id="specification" role="tabpanel">
+                                    <p><strong>Kondisi:</strong> {{ $auction->condition ?? '-' }}</p>
+                                    <p><strong>Material:</strong> {{ $auction->material ?? '-' }}</p>
+                                    <p><strong>Dimensi:</strong>
+                                        Tinggi: {{ $auction->height ?? '-' }} cm,
+                                        Lebar: {{ $auction->width ?? '-' }} cm
+                                    </p>
+                                    <p><strong>Berat:</strong> {{ $auction->weight ? $auction->weight . ' kg' : '-' }}</p>
+                                    <hr class="my-2" style="width: 50px">
+                                    <p><strong>Sertifikat Keaslian:</strong> {{ $auction->authenticity_certificate ?? '-' }}</p>
+                                    @if ($auction->authenticity_certificate_images)
+                                        <p><strong>Gambar Sertifikat:</strong></p>
+                                        <img src="{{ asset('storage/' . $auction->authenticity_certificate_images) }}" width="200" class="mb-3">
+                                    @endif
                                 </div>
                             </div>
                         </div>

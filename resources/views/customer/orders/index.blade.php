@@ -4,11 +4,11 @@
 
     <div class="d-flex justify-content-center mt-5">
         <div style="width: 1200px">
-            <div style="color: white;border-radius:10px" class="bg_jualLelang p-5">
-                <p class="fw-bold fs-1">Timeless Treasures Await</p>
-                <p style="font-style: italic">Explore handpicked antiques from passionate collectors around the world.</p>
+            <div style="color: white;border-radius:10px" class="bg_invite p-5">
+                <p class="fw-bold fs-1 color_cream">Timeless Treasures Await</p>
+                <p class="color_cream" style="font-style: italic">Explore handpicked antiques from passionate collectors around the world.</p>
                 <div class="mt-5">
-                    <a href="#mostViewed"><button class="btn btn-main me-3">Browse All Listings</button></a>
+                    <a href="#mostViewed"><button class="btn btn-primary me-3">Browse All Listings</button></a>
                     <button class="btn btn-mainOutline">Start Your Collection</button>
                     
                 </div>

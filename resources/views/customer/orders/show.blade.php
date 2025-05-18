@@ -45,11 +45,33 @@
                                     <p class="main_color">{{ $item->description }}</p>
                                 </div>
                                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-                                    <p class="main_color"><strong>Condition:</strong> Brand New</p>
-                                    <p class="main_color"><strong>Min. Order:</strong> 1 Piece</p>
+                                    <li><strong>Kategori:</strong> {{ $item->category ?? '-' }}</li>
+                                    <li><strong>Tingkat Kelangkaan:</strong> {{ $item->rarity_level ?? '-' }}</li>
+                                    <li><strong>Catatan Kerusakan:</strong> {{ $item->damage_notes ?? '-' }}</li>
+
+                                    <hr class="my-2" style="width: 50px">
+
+                                    <li><strong>Tahun Pembuatan:</strong> {{ $item->year_of_origin ? \Carbon\Carbon::parse($item->year_of_origin)->translatedFormat('d F Y') : '-' }}</li>
+                                    <li><strong>Wilayah / Negara Asal:</strong> {{ $item->region_of_origin ?? '-' }}</li>
+                                    <li><strong>Pembuat / Pengrajin:</strong> {{ $item->maker ?? '-' }}</li>
+                                    <hr class="my-2" style="width: 50px">
+                                    <li><strong>Restorasi:</strong> {{ $item->restoration_info ?? '-' }}</li>
+                                    <li><strong>Provenance:</strong> {{ $item->provenance ?? '-' }}</li>
+                                    <hr class="my-2" style="width: 50px">
+                                    <li><strong>Minimal Order:</strong> {{ $item->min_order ?? '-' }}</li>
                                 </div>
                                 <div class="tab-pane fade" id="pills-Specification" role="tabpanel" aria-labelledby="pills-Specification-tab" tabindex="0">
-    
+                                    <li><strong>Material:</strong> {{ $item->material ?? '-' }}</li>
+                                    <li><strong>Dimensi (T x L):</strong> {{ $item->height ?? '-' }} cm x {{ $item->width ?? '-' }} cm</li>
+                                    <li><strong>Berat:</strong> {{ $item->weight ?? '-' }} kg</li>
+                                    <li><strong>Kondisi:</strong> {{ $item->condition ?? '-' }}</li>
+                                    <hr class="my-2" style="width: 50px">
+                                    <p><strong>Sertifikat Keaslian:</strong> {{ $item->authenticity_certificate ?? '-' }}</p>
+                                    @if ($item->authenticity_certificate_images)
+                                        <div class="mt-2">
+                                            <img src="{{ asset('storage/' . $item->authenticity_certificate_images) }}" alt="Sertifikat" width="200">
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
     
@@ -58,13 +80,13 @@
                                 <p class="fs-5 fw-bold mb-2">Shipping</p>
                                 <div class="d-flex gap-2 align-items-center mt-2">
                                     <i class="bi bi-geo-alt"></i>
-                                    <p class="">Sent from <span class="fw-bold">South Jakarta Administrative City</span></p>
+                                    <p class="">Sent from <span class="fw-bold">{{ $item->shipping_locations ?? '-' }}</span></p>
                                 </div>
                                 <div class="d-flex gap-2 align-items-center mt-2">
                                     <i class="bi bi-truck"></i>
                                     <div>
-                                        <p>Shipping costs start from <span class="fw-bold">Rp6,500</span></p>
-                                        <p>Estimated arrival in <span class="fw-bold">2-3 days</span></p>
+                                        <p>Shipping costs and Estimated arrival:</p>
+                                        <p class="fw-bold">{{ $item->shipping_cost ?? '-' }}</p>
                                     </div>
                                 </div>
                             </div>
@@ -75,7 +97,7 @@
 
                 <div style="border-radius: 10px" class="bg_main text-white p-4">
                     <p class="fw-bold fs-2 main_color">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-                    <p class="mt-1 main_color">Delivery <span class="fw-bold">Tuesday, May 27.</span></p>
+                    {{-- <p class="mt-1 main_color">Delivery <span class="fw-bold">Tuesday, May 27.</span></p> --}}
                     <div class="d-flex gap-2 align-items-center mt-4">
                         <i class="bi bi-geo-alt"></i>
                         <p class="">deliver to <br><span class="fw-bold underline">
@@ -147,7 +169,7 @@
                                     <p>sold by:</p>
                                 </td>
                                 <td>
-                                    <p class="ms-4 fw-semibold">user</p>
+                                    <p class="ms-4 fw-semibold">{{ $item->customer->name ?? '-' }}</p>
                                 </td>
                             </tr>
 
@@ -156,7 +178,7 @@
                                     <p>returns:</p>
                                 </td>
                                 <td>
-                                    <p class="ms-4 fw-semibold">30-day refund <br>/replacement</p>
+                                    <p class="ms-4 fw-semibold">{{ $item->returns_package ?? '-' }}</p>
                                 </td>
                             </tr>
                         </table>

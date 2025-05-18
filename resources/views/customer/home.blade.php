@@ -32,23 +32,23 @@
 
             <div class="d-flex justify-content-between">
                 <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/category/koleksi.png" alt="">
+                    <img class="w-100" style="max-width: 200px;" src="/image/category/koleksi.png" alt="">
                     <p class="mt-3 fs-6 main_color fw-medium">Antik & Koleksi Kuno</p>
                 </div>
                 <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/category/jam.png" alt="">
+                    <img class="w-100" style="max-width: 200px;" src="/image/category/jam.png" alt="">
                     <p class="mt-3 fs-6 main_color fw-medium">Jam Antik & Aksesoris Waktu</p>
                 </div>
                 <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/category/radio.png" alt="">
+                    <img class="w-100" style="max-width: 200px;" src="/image/category/radio.png" alt="">
                     <p class="mt-3 fs-6 main_color fw-medium">Elektronik & Radio Vintage</p>
                 </div>
                 <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/category/kursi.png" alt="">
+                    <img class="w-100" style="max-width: 200px;" src="/image/category/kursi.png" alt="">
                     <p class="mt-3 fs-6 main_color fw-medium">Furnitur & Dekorasi Antik</p>
                 </div>
                 <div class="p-3 bg_category text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/category/kris.png" alt="">
+                    <img class="w-100" style="max-width: 200px;" src="/image/category/kris.png" alt="">
                     <p class="mt-3 fs-6 main_color fw-medium">Senjata & Peralatan Tradisional</p>
                 </div>
             </div>
@@ -96,23 +96,23 @@
 
             <div class="d-flex justify-content-between">
                 <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/3.png" alt="">
+                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
                     <p class="mt-3 fw-medium">lorem ipsum</p>
                 </div>
                 <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/3.png" alt="">
+                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
                     <p class="mt-3 fw-medium">lorem ipsum</p>
                 </div>
                 <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/3.png" alt="">
+                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
                     <p class="mt-3 fw-medium">lorem ipsum</p>
                 </div>
                 <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/3.png" alt="">
+                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
                     <p class="mt-3 fw-medium">lorem ipsum</p>
                 </div>
                 <div class="p-3 bg_category text-center">
-                    <img class="w-100" style="height: 200px; width: 500px;" src="/image/3.png" alt="">
+                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
                     <p class="mt-3 fw-medium">lorem ipsum</p>
                 </div>
             </div>

@@ -6,68 +6,89 @@
         <div style="width: 1200px">
             
             <div class="bg-white p-4 rounded-xl">
-                <h2 class="text-2xl font-bold text-gray-800">Riwayat Transaksi</h2>
+                <p class="fw-bold">Riwayat Transaksi</p>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, sapiente!</p>
 
                 @if (session('error'))
                     <p class="text-red-500 mt-4">{{ session('error') }}</p>
                 @endif
 
                 @if ($transactions->isEmpty())
-                    <p class="text-gray-500 mt-4">Anda belum memiliki transaksi.</p>
+                    <p class="text-neutral-500 mt-4">Anda belum memiliki transaksi.</p>
                 @else
-                    <table class="w-full mt-4 border-collapse border border-gray-200">
+                    <table class="w-full mt-4 border-collapse border border-neutral-200">
                         <thead>
-                            <tr class="bg-gray-100">
-                                <th class="border border-gray-300 px-4 py-2 text-left">Barang</th>
-                                <th class="border border-gray-300 px-4 py-2 text-center">Total Harga</th>
-                                <th class="border border-gray-300 px-4 py-2 text-center">Status</th>
+                            <tr class="bg-neutral-100">
+                                <th class="border border-neutral-300 px-4 py-2 text-center fw-normal">Gambar</th>
+                                <th class="border border-neutral-300 px-4 py-2 text-center fw-normal">Nama Barang</th>
+                                <th class="border border-neutral-300 px-4 py-2 text-center fw-normal">Jenis Transaksi</th>
+                                <th class="border border-neutral-300 px-4 py-2 text-center fw-normal">Total Harga</th>
+                                <th class="border border-neutral-300 px-4 py-2 text-center fw-normal">Status</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($transactions as $transaction)
                                 <tr>
-                                    <td class="border border-gray-300 px-4 py-2 flex items-center">
+                                    <!-- Kolom Gambar -->
+                                    <td class="border border-neutral-300 px-4 py-2 text-center">
                                         @if ($transaction->auction)
-                                            <img src="{{ asset('storage/' . $transaction->auction->image_path) }}"
-                                                class="w-20 h-20 object-cover rounded mr-4">
-                                            <div>
-                                                <p class="text-lg font-bold">{{ $transaction->auction->name }}</p>
-                                                <p class="text-gray-500">Dibeli dari Lelang</p>
-                                            </div>
+                                            <img src="{{ asset('storage/' . $transaction->auction->image_path) }}" class="w-20 h-20 object-cover rounded mx-auto">
                                         @elseif ($transaction->item)
-                                            <img src="{{ asset('storage/' . $transaction->item->image_path) }}"
-                                                class="w-20 h-20 object-cover rounded mr-4">
-                                            <div>
-                                                <p class="text-lg font-bold">{{ $transaction->item->name }}</p>
-                                                <p class="text-gray-500">Dibeli Langsung</p>
-                                            </div>
+                                            <img src="{{ asset('storage/' . $transaction->item->image_path) }}" class="w-20 h-20 object-cover rounded mx-auto">
                                         @else
-                                            <p class="text-gray-500">Data barang tidak ditemukan</p>
+                                            <span class="text-neutral-500">Tidak tersedia</span>
                                         @endif
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2 text-center">
+
+                                    <!-- Kolom Nama Barang -->
+                                    <td class="border border-neutral-300 px-4 py-2 text-center">
+                                        @if ($transaction->auction)
+                                            {{ $transaction->auction->name }}
+                                        @elseif ($transaction->item)
+                                            {{ $transaction->item->name }}
+                                        @else
+                                            <span class="text-neutral-500">Tidak diketahui</span>
+                                        @endif
+                                    </td>
+
+                                    <!-- Kolom Jenis Transaksi -->
+                                    <td class="border border-neutral-300 px-4 py-2 text-center">
+                                        @if ($transaction->auction)
+                                            Dibeli dari Lelang
+                                        @elseif ($transaction->item)
+                                            Dibeli Langsung
+                                        @else
+                                            Tidak diketahui
+                                        @endif
+                                    </td>
+
+                                    <!-- Kolom Total Harga -->
+                                    <td class="border border-neutral-300 px-4 py-2 text-center">
                                         Rp {{ number_format($transaction->total_price, 0, ',', '.') }}
                                     </td>
-                                    <td class="border border-gray-300 px-4 py-2 text-center">
+
+                                    <!-- Kolom Status -->
+                                    <td class="border border-neutral-300 px-4 py-2 text-center">
                                         @if ($transaction->status == 'waiting_payment')
-                                            <span class="text-yellow-500 font-semibold">Menunggu Pembayaran</span>
+                                            <span class="text-yellow-500">Menunggu Pembayaran</span>
                                         @elseif ($transaction->status == 'processing')
-                                            <span class="text-blue-500 font-semibold">Sedang Diproses</span>
+                                            <span class="text-blue-500">Sedang Diproses</span>
                                         @elseif ($transaction->status == 'completed')
-                                            <span class="text-green-500 font-semibold">Selesai</span>
+                                            <span class="text-green-500">Selesai</span>
                                         @elseif ($transaction->status == 'failed')
-                                            <span class="text-red-500 font-semibold">Gagal</span>
+                                            <span class="text-red-500">Gagal</span>
                                         @endif
                                     </td>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
+
                 @endif
 
-                <a href="{{ route('customer.dashboard') }}" class="block text-center mt-6 text-gray-500 hover:text-gray-700">
-                    🔙 Kembali ke Beranda
-                </a>
+                {{-- <a href="{{ route('customer.dashboard') }}" class="block text-start mt-2 text-neutral-500 hover:text-neutral-700">
+                    Kembali ke Beranda
+                </a> --}}
             </div>
 
         </div>
