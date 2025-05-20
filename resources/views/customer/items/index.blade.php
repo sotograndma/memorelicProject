@@ -6,7 +6,7 @@
             <div class="">
                 <p style="font-weight: bold !important" class="font-bold">Barang yang Anda Jual</p>
                 <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, sapiente!</p>
-                <button class="btn btn-primary"><a href="{{ route('customer.items.create') }}">Jual
+                <button class="btn btn_maroon"><a href="{{ route('customer.items.create') }}">Jual
                         Barang</a></button>
 
                 @if (session('success'))

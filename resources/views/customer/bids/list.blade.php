@@ -9,7 +9,7 @@
                 <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, sapiente!</p>
 
                 @if ($bids->isEmpty())
-                    <p class="color_main mt-4">Anda belum pernah melakukan bid.</p>
+                    <p class="color_dark mt-4">Anda belum pernah melakukan bid.</p>
                 @else
                     <table class="w-full mt-4 border-collapse border border-neutral-200">
                         <thead>

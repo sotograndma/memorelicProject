@@ -69,16 +69,58 @@
 
                                     <!-- Kolom Status -->
                                     <td class="border border-neutral-300 px-4 py-2 text-center">
-                                        @if ($transaction->status == 'waiting_payment')
-                                            <span class="text-yellow-500">Menunggu Pembayaran</span>
-                                        @elseif ($transaction->status == 'processing')
-                                            <span class="text-blue-500">Sedang Diproses</span>
-                                        @elseif ($transaction->status == 'completed')
-                                            <span class="text-green-500">Selesai</span>
-                                        @elseif ($transaction->status == 'failed')
-                                            <span class="text-red-500">Gagal</span>
-                                        @endif
+                                        @switch($transaction->status)
+                                            @case('waiting_payment')
+                                                <span class="text-yellow-500">Menunggu Pembayaran</span>
+                                                @break
+
+                                            @case('processing')
+                                                <span class="text-blue-500">Sedang Diproses</span>
+                                                @break
+
+                                            @case('shipping_in_progress')
+                                                <span class="text-cyan-600">Barang Sedang Dikirim</span>
+                                                @break
+
+                                            @case('shipped')
+                                                <button onclick="showConfirmModal({{ $transaction->id }})" class="text-blue-500 underline">
+                                                    Barang Sudah Dikirim - Konfirmasi?
+                                                </button>
+                                                @break
+
+                                            @case('waiting_review')
+                                                <a href="{{ route('customer.payment.completed', $transaction->id) }}" class="text-orange-500 underline">
+                                                    Menunggu Review
+                                                </a>
+                                                @break
+
+                                            @case('completed')
+                                                @php
+                                                    $hasReviewed = \App\Models\ItemReview::where('item_id', $transaction->item_id)
+                                                                    ->where('customer_id', auth()->id())
+                                                                    ->exists();
+                                                @endphp
+                                                @if ($hasReviewed)
+                                                    <span class="text-green-600">Selesai (Sudah Diulas)</span>
+                                                @else
+                                                    <span class="text-green-500">Selesai</span>
+                                                @endif
+                                                @break
+
+                                            @case('failed')
+                                                <span class="text-red-500">
+                                                    Gagal
+                                                    @if ($transaction->failure_reason)
+                                                        - {{ $transaction->failure_reason }}
+                                                    @endif
+                                                </span>
+                                                @break
+
+                                            @default
+                                                <span class="text-neutral-500">Status Tidak Diketahui</span>
+                                        @endswitch
                                     </td>
+
                                 </tr>
                             @endforeach
                         </tbody>
@@ -95,4 +137,68 @@
     </div>
 
     <div style="height: 300px"></div>
+
+    <div style="margin-top: 500px" class="modal fade" id="confirmReceivedModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <form id="confirmReceivedForm" method="POST">
+                @csrf
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmModalLabel">Konfirmasi Penerimaan Barang</h5>
+                </div>
+                <div class="modal-body">
+                    Apakah Anda sudah menerima barang ini?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Nanti Saja</button>
+                    <button type="submit" class="btn btn-success">Ya, Saya Terima</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
 @endsection
+
+<!-- Modal Konfirmasi -->
+
+<script>
+    function showConfirmModal(transactionId) {
+        const form = document.getElementById('confirmReceivedForm');
+        form.action = `/customer/transactions/confirm-received/${transactionId}`;
+        new bootstrap.Modal(document.getElementById('confirmReceivedModal')).show();
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const form = document.getElementById('confirmReceivedForm');
+
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const action = form.action;
+            const token = form.querySelector('input[name="_token"]').value;
+
+            fetch(action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': token,
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Reload halaman agar status berubah jadi "Menunggu Review"
+                    location.reload();
+                } else {
+                    alert('Gagal mengonfirmasi penerimaan.');
+                }
+            })
+            .catch(error => {
+                console.error(error);
+                alert('Terjadi kesalahan saat mengonfirmasi.');
+            });
+        });
+    });
+</script>
+

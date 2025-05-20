@@ -2,7 +2,7 @@
 
 @section('content')
     
-    <div id="home" class="carousel slide" data-bs-ride="carousel">
+    {{-- <div id="home" class="carousel slide" data-bs-ride="carousel">
         <div class="carousel-inner">
             <div class="carousel-item carousel-item_navbar active" data-bs-interval="10000">
                 <img src="/image/1.png" class="d-block w-100" alt="...">
@@ -26,7 +26,7 @@
 
     <div class="d-flex justify-content-center mt-5">
         <div style="width: 1200px">
-            <div class="color_main d-flex justify-content-between px-2 p-3 mt-3">
+            <div class="color_dark d-flex justify-content-between px-2 p-3 mt-3">
                 <p class="fw-bold fs-4">Category</p>
             </div>
 
@@ -57,7 +57,7 @@
 
     <div class="d-flex justify-content-center mt-5">
         <div style="width: 1200px">
-            <div class="color_main d-flex justify-content-center px-2 p-3 mt-3">
+            <div class="color_dark d-flex justify-content-center px-2 p-3 mt-3">
                 <p class="fw-bold fs-4">Ongoing Highest Bid</p>
             </div>
 
@@ -89,7 +89,7 @@
 
     <div class="d-flex justify-content-center mt-5">
         <div style="width: 1200px">
-            <div class="color_main d-flex justify-content-between px-2 p-3 mt-3">
+            <div class="color_dark d-flex justify-content-between px-2 p-3 mt-3">
                 <p class="fw-bold fs-4">Most Purchase</p>
                 <a style="font-style: italic; font-size: 0.8em">see all</a>
             </div>
@@ -117,7 +117,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <div style="height: 1000px"></div>
 

@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Customer - Memorelic</title>
+    <link rel="icon" type="image/png" href="{{ asset('image/hootbert/hootbert_half.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -78,14 +79,33 @@
                         <button onclick="toggleDropdown('barangDropdown')" class="text-white rounded me-5">
                             Jual / Lelang ▼
                         </button>
-                        <ul id="barangDropdown"
-                            class="hidden absolute bg_dropdown text-white rounded shadow-lg mt-2 w-48 z-50">
-                            <li><a href="{{ route('customer.items.index') }}"
-                                    class="block px-4 py-2 bg_dropdownSelect">Jual Barang</a></li>
-                            <li><a href="{{ route('customer.auctions.index') }}"
-                                    class="block px-4 py-2 bg_dropdownSelect">Lelang Barang</a></li>
-                            <li><a href="{{ route('customer.sold.items') }}"
-                                    class="block px-4 py-2 bg_dropdownSelect">Barang Terjual</a></li>
+
+                        {{-- buka comment ini kalau mau liat loading screen --}}
+                        {{-- @php $isVerified = Auth::user()->is_verified_seller; @endphp --}}
+
+                        @php
+                            $customer = Auth::user()->userable;
+                            $isVerified = $customer && $customer->is_verified_seller;
+                        @endphp
+
+
+                        <ul id="barangDropdown" class="hidden absolute bg_dropdown text-white rounded shadow-lg mt-2 w-48 z-50">
+                            <li>
+                                <a href="{{ $isVerified ? route('customer.items.index') : route('seller.verification.prompt') }}"
+                                class="block px-4 py-2 bg_dropdownSelect">Jual Barang</a>
+                            </li>
+                            <li>
+                                <a href="{{ $isVerified ? route('customer.auctions.index') : route('seller.verification.prompt') }}"
+                                class="block px-4 py-2 bg_dropdownSelect">Lelang Barang</a>
+                            </li>
+                            <li>
+                                <a href="{{ $isVerified ? route('customer.sold.items') : route('seller.verification.prompt') }}"
+                                class="block px-4 py-2 bg_dropdownSelect">Barang Terjual</a>
+                            </li>
+                            <li>
+                                <a href="{{ $isVerified ? route('customer.transactions.manage') : route('seller.verification.prompt') }}"
+                                class="block px-4 py-2 bg_dropdownSelect">Kelola Pengiriman</a>
+                            </li>
                         </ul>
                     </li>
 
@@ -152,6 +172,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
+    
 
     @yield('content')
 </body>

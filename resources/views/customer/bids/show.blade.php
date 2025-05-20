@@ -7,7 +7,7 @@
             <div class="d-flex justify-content-between">
 
                 <!-- Kiri: Gambar dan Deskripsi -->
-                <div class="bg_jual-beli me-3">
+                <div class="bg_category me-3">
                     <div class="flex flex-col md:flex-row gap-6">
                         <!-- Gambar Produk -->
                         <div class="w-full md:w-1/2">
@@ -33,13 +33,13 @@
 
                             <ul class="nav nav-underline mt-4" id="auction-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active color_main" id="description-tab" data-bs-toggle="pill" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
+                                    <button class="nav-link active color_dark" id="description-tab" data-bs-toggle="pill" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">Description</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link color_main" id="detail-tab" data-bs-toggle="pill" data-bs-target="#detail" type="button" role="tab" aria-controls="detail" aria-selected="true">Detail</button>
+                                    <button class="nav-link color_dark" id="detail-tab" data-bs-toggle="pill" data-bs-target="#detail" type="button" role="tab" aria-controls="detail" aria-selected="true">Detail</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link color_main" id="specification-tab" data-bs-toggle="pill" data-bs-target="#specification" type="button" role="tab" aria-controls="specification" aria-selected="true">Specification</button>
+                                    <button class="nav-link color_dark" id="specification-tab" data-bs-toggle="pill" data-bs-target="#specification" type="button" role="tab" aria-controls="specification" aria-selected="true">Specification</button>
                                 </li>
                             </ul>
 
@@ -123,7 +123,7 @@
 
                     <!-- Tombol Bid -->
                     @if ($auction->status == 'ongoing')
-                        <a href="{{ route('customer.bids.create', $auction->id) }}" style="width: 100%;font-size: 0.85em;" class="btn btn-main mt-3">Bid Barang</a>
+                        <a href="{{ route('customer.bids.create', $auction->id) }}" style="width: 100%;font-size: 0.85em;" class="btn btn_maroon mt-3">Bid Barang</a>
                     @endif
 
                     <!-- Link ke riwayat bid -->

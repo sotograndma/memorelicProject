@@ -56,4 +56,10 @@ class Item extends Model
     {
         return $this->hasMany(Transaction::class, 'item_id');
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(ItemReview::class);
+    }
+
 }

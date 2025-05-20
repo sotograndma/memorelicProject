@@ -7,12 +7,12 @@
             <div class="p-5 bg-white rounded-xl">
                 <p class="fw-bold fs-5">Masukkan Penawaran</p>
 
-                <p class="color_main mt-3">Barang: <strong>{{ $auction->name }}</strong></p>
-                <p class="color_main">Harga Awal: <strong>Rp {{ number_format($auction->starting_bid, 0, ',', '.') }}</strong>
+                <p class="color_dark mt-3">Barang: <strong>{{ $auction->name }}</strong></p>
+                <p class="color_dark">Harga Awal: <strong>Rp {{ number_format($auction->starting_bid, 0, ',', '.') }}</strong>
                 </p>
-                <p class="color_main">Bid Tertinggi Saat Ini: <strong>Rp
+                <p class="color_dark">Bid Tertinggi Saat Ini: <strong>Rp
                         {{ number_format($auction->highest_bid, 0, ',', '.') }}</strong></p>
-                <p class="color_main">Minimal Bid Baru:
+                <p class="color_dark">Minimal Bid Baru:
                     <strong>Rp {{ number_format($auction->highest_bid + $auction->minimum_increment, 0, ',', '.') }}</strong>
                 </p>
 
@@ -28,13 +28,13 @@
                             required>
                     </div>
 
-                    <button type="submit" class="w-full btn btn-main">
+                    <button type="submit" class="w-full btn btn_maroon">
                         Bid Sekarang
                     </button>
                 </form>
 
                 <a style="font-size: 0.85em" href="{{ route('customer.bids.show', $auction->id) }}"
-                    class="block text-start mt-1 underline color_main">
+                    class="block text-start mt-1 underline color_dark">
                     Back to Item Details
                 </a>
             </div>

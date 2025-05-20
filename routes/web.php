@@ -12,6 +12,9 @@ use App\Http\Controllers\Customer\BidController;
 use App\Http\Controllers\AdminUserController;
 use App\Http\Controllers\CourierController;
 use App\Http\Controllers\Customer\TransactionController;
+use App\Http\Controllers\Customer\ItemReviewController;
+use App\Http\Controllers\Customer\SellerVerificationController;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -125,6 +128,31 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
 
     // Halaman Barang Terjual untuk Penjual
     Route::get('/customer/sold-items', [TransactionController::class, 'soldItems'])->name('customer.sold.items');
+
+    Route::post('/customer/items/review/{item}', [ItemReviewController::class, 'store'])->name('customer.items.review');
+
+    Route::post('/customer/items/review/{transaction}', [ItemReviewController::class, 'store'])->name('customer.items.review');
+
+
+    // Untuk halaman list transaksi processing milik penjual
+    Route::get('/customer/transactions/manage', [TransactionController::class, 'manageShipping'])->name('customer.transactions.manage');
+
+    // Untuk update status pengiriman
+    Route::post('/customer/transactions/update-status/{id}', [TransactionController::class, 'updateShippingStatus'])->name('customer.transactions.update');
+
+    // Konfirmasi penerimaan barang
+    Route::post('/customer/transactions/confirm-received/{id}', [TransactionController::class, 'confirmReceived'])->name('customer.transactions.confirmReceived');
+
+    // Ulasan barang
+    Route::post('/customer/items/review/{item}', [ItemReviewController::class, 'store'])->name('customer.items.review');
+
+    // Verifikasi Penjual
+    Route::get('/seller/verification', [SellerVerificationController::class, 'prompt'])->name('seller.verification.prompt');
+    Route::get('/seller/agreement', [SellerVerificationController::class, 'agreement'])->name('seller.verification.agreement');
+    Route::post('/seller/verify', [SellerVerificationController::class, 'verify'])->name('seller.verification.confirm');
+
+
+
 });
 
 // Halaman khusus courier (Kurir)

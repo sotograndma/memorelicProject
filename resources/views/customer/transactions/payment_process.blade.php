@@ -7,7 +7,7 @@
 
             <div class="d-flex justify-content-between">
                 
-                <div style="width: 100%" class="bg_jual-beli p-4 me-4">
+                <div style="width: 100%" class="bg_category p-4 me-4">
                     <div class="bg-white p-4 rounded-xl mb-4">
                         <p class="fs-5 fw-bold mb-2">Menunggu Verifikasi Pembayaran</p>
                         <p class="">Kami sedang memproses pembayaran Anda...</p>
@@ -24,7 +24,7 @@
 
                         <div class="mt-4">
                             <p class="">Kode Pembayaran:</p>
-                            <p class="fs-5 fw-bold color_maroonMain">{{ $transaction->payment_code }}</p>
+                            <p class="fs-5 fw-bold color_maroon">{{ $transaction->payment_code }}</p>
                         </div>
 
                         <div class="mt-4">
@@ -33,7 +33,7 @@
                     </div>
 
                     <a href="{{ route('customer.payment.completed', ['transaction_id' => $transaction->id]) }}"
-                            class="btn btn-main" style="width: 100%">
+                            class="btn btn_maroon" style="width: 100%">
                             Selesai & Kembali ke Beranda
                     </a>
                     
@@ -44,7 +44,7 @@
 
                 </div>
 
-                <div class="bg_jualLelang d-flex align-items-center justify-content-center p-4" style="width: 30%">
+                <div class="bg_dark d-flex align-items-center justify-content-center p-4" style="width: 30%">
                     <div class="color_cream">
                         <p class="fw-bold fs-5 color_cream">Mohon perhatikan:</p>
                         <p>Transfer hanya dapat dilakukan satu kali sesuai jumlah yang tertera.</p>

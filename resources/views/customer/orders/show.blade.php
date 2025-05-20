@@ -7,7 +7,7 @@
 
             <div class="d-flex justify-content-between">
 
-                <div class="bg_jual-beli me-3">
+                <div class="bg_category me-3">
                     <div class="flex flex-col md:flex-row gap-6">
     
                         <!-- Gambar Produk -->
@@ -25,19 +25,31 @@
                         <!-- Informasi Produk -->
                         <div class="w-full md:w-1/2">
                             <p class="fs-5">{{ $item->name }}</p>
-                            <p class="text-neutral-500">Terjual {{ $item->sold_count }} | 5 (166 rating)</p>
+                            @php
+                                $averageRating = round($item->reviews->avg('rating'), 1);
+                                $totalRating = $item->reviews->count();
+                            @endphp
+
+                            <p class="text-neutral-500">
+                                Terjual {{ $item->sold_count }} | 
+                                {{ $averageRating }} 
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="bi {{ $i <= $averageRating ? 'bi-star-fill text-warning' : 'bi-star text-warning' }}"></i>
+                                @endfor
+                                ({{ $totalRating }} rating)
+                            </p>
     
                             <p class="fw-bold mt-3 fs-2 main_color">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
     
                             <ul class="nav nav-underline mt-4" id="pills-tab" role="tablist">
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link active color_main" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Description</button>
+                                    <button class="nav-link active color_dark" id="pills-home-tab" data-bs-toggle="pill" data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Description</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link color_main" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Detail</button>
+                                    <button class="nav-link color_dark" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Detail</button>
                                 </li>
                                 <li class="nav-item" role="presentation">
-                                    <button class="nav-link color_main" id="pills-Specification-tab" data-bs-toggle="pill" data-bs-target="#pills-Specification" type="button" role="tab" aria-controls="pills-Specification" aria-selected="false">Specification</button>
+                                    <button class="nav-link color_dark" id="pills-Specification-tab" data-bs-toggle="pill" data-bs-target="#pills-Specification" type="button" role="tab" aria-controls="pills-Specification" aria-selected="false">Specification</button>
                                 </li>
                             </ul>
                             <div class="tab-content mt-3" id="pills-tabContent">
@@ -135,7 +147,7 @@
                             </div>
 
                             <div class="mt-4">
-                                <button type="submit" style="font-size: 0.85em; width: 100%;" class="btn btn-main mt-2">
+                                <button type="submit" style="font-size: 0.85em; width: 100%;" class="btn btn_maroon mt-2">
                                     Buy Now
                                 </button>
                             </div>
@@ -151,7 +163,7 @@
                         </div>
                     @endif
 
-                    <button style="font-size: 0.85em; width: 100%;" class="btn btn-mainOutline mt-2">Add to Cart</button>
+                    <button style="font-size: 0.85em; width: 100%;" class="btn btn_cream mt-2">Add to Cart</button>
 
                     <div class="mt-4">
                         <table>
@@ -205,6 +217,34 @@
 
                 </div>
             </div>
+
+            <div class="mt-5">
+                <h5 class="fw-bold">Ulasan Pembeli</h5>
+
+                @if ($item->reviews->count() > 0)
+                    @foreach ($item->reviews as $review)
+                        <div class="border rounded p-3 mb-3 bg-white shadow-sm">
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <p class="mb-0 fw-semibold">{{ $review->customer->name ?? 'Pengguna' }}</p>
+                                <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
+                            </div>
+                            <div class="mb-1">
+                                <p class="mb-1 text-warning">
+                                    @for ($i = 1; $i <= 5; $i++)
+                                        <i class="bi {{ $i <= $review->rating ? 'bi-star-fill' : 'bi-star' }}"></i>
+                                    @endfor
+                                </p>
+                            </div>
+                            @if ($review->comment)
+                                <p class="mb-0">{{ $review->comment }}</p>
+                            @endif
+                        </div>
+                    @endforeach
+                @else
+                    <p class="text-muted">Belum ada ulasan untuk barang ini.</p>
+                @endif
+            </div>
+
 
         </div>
     </div>

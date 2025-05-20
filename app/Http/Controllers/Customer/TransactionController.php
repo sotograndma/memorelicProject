@@ -146,28 +146,23 @@ class TransactionController extends Controller
     {
         $transaction = Transaction::findOrFail($transaction_id);
 
-        // Perbarui status transaksi menjadi 'completed'
-        $transaction->update(['status' => 'completed']);
+        // Hanya ubah ke processing jika status masih waiting_payment
+        if ($transaction->status === 'waiting_payment') {
+            $transaction->update(['status' => 'processing']);
+        }
 
         if ($transaction->item_id) {
             $item = $transaction->item;
-
-            // Tambahkan jumlah terjual
             $item->sold_count += $transaction->quantity;
-
-            // Cek status tetap (sudah dihandle saat checkout)
             $item->save();
         }
 
         if ($transaction->auction_id) {
-            // Jika dari auction, update status auction menjadi sold
             $auction = Auction::findOrFail($transaction->auction_id);
             $auction->status = 'sold';
             $auction->is_checkout_done = true;
             $auction->save();
         } elseif ($transaction->item_id) {
-            // Tidak perlu ubah status item karena sudah ditangani di processCheckout()
-            // Namun jika Anda ingin jaga-jaga untuk sinkronisasi:
             $item = Item::findOrFail($transaction->item_id);
             if ($item->stock <= 0 && $item->status != 'sold') {
                 $item->status = 'sold';
@@ -175,9 +170,9 @@ class TransactionController extends Controller
             }
         }
 
+        // Kirim ke view dengan modal jika session review_submitted ada
         return view('customer.transactions.payment_completed', compact('transaction'));
     }
-
 
     // Halaman Riwayat Transaksi
     public function transactionHistory(Request $request)
@@ -225,4 +220,71 @@ class TransactionController extends Controller
 
         return view('customer.items.sold_items', compact('soldItems', 'soldAuctions'));
     }
+
+    // Halaman untuk penjual melihat transaksi processing
+    public function manageShipping()
+    {
+        $user = Auth::user();
+
+        $transactions = Transaction::whereIn('status', ['processing', 'shipping_in_progress'])
+            ->where(function ($query) use ($user) {
+                $query->whereHas('item', function ($q) use ($user) {
+                    $q->where('customers_id', $user->userable_id);
+                })->orWhereHas('auction', function ($q) use ($user) {
+                    $q->where('customers_id', $user->userable_id);
+                });
+            })
+            ->with(['item', 'auction', 'customer'])
+            ->get();
+
+        return view('customer.transactions.manage', compact('transactions'));
+    }
+
+    // Mengupdate status transaksi (shipped / failed)
+    public function updateShippingStatus(Request $request, $id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        $request->validate([
+            'status' => 'required|in:shipping_in_progress,shipped,failed',
+            'failure_reason' => 'nullable|string|max:255',
+        ]);
+
+        if ($request->status == 'failed') {
+            if (!$request->filled('failure_reason')) {
+                return back()->with('error', 'Alasan harus diisi untuk status gagal.');
+            }
+            $transaction->update([
+                'status' => 'failed',
+                'failure_reason' => $request->failure_reason,
+            ]);
+        } elseif ($request->status == 'shipping_in_progress') {
+            $transaction->update([
+                'status' => 'shipping_in_progress',
+            ]);
+        } elseif ($request->status == 'shipped') {
+            $transaction->update([
+                'status' => 'shipped',
+            ]);
+        }
+
+        return back()->with('success', 'Status berhasil diperbarui.');
+    }
+
+    public function confirmReceived(Request $request, $id)
+    {
+        $transaction = Transaction::findOrFail($id);
+
+        if ($transaction->status !== 'shipped') {
+            return back()->with('error', 'Transaksi belum dapat dikonfirmasi.');
+        }
+
+        $transaction->update([
+            'status' => 'waiting_review'
+        ]);
+
+        return response()->json(['success' => true]);
+    }
+
+
 }

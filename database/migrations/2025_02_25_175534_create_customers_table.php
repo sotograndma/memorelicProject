@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('profile_photo')->nullable();
             $table->text('locations')->nullable();
+            $table->boolean('is_verified_seller')->default(false);
             $table->timestamps();
         });
     }

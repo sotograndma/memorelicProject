@@ -3,7 +3,7 @@
 @section('content')
     <div class="d-flex justify-content-center mt-5">
         <div style="width: 1200px">
-            <div class="bg_jual-beli p-4">
+            <div class="bg_category p-4">
 
                 <p class="fw-bold fs-5 mb-4">Checkout</p>
 
@@ -69,7 +69,7 @@
                                 <p class="text-white">Total Harga: <strong>Rp {{ number_format($totalPrice, 0, ',', '.') }}</strong></p>
                                 <p class="text-white">Metode Pembayaran: <strong>Transfer Bank</strong></p>
 
-                                <button style="width: 100%" type="submit" class="btn btn-main mt-3">Bayar Sekarang</button>
+                                <button style="width: 100%" type="submit" class="btn btn_maroon mt-3">Bayar Sekarang</button>
                             </div>
                         </div>
                     </div>

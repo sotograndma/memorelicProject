@@ -8,12 +8,12 @@
                 <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, sapiente!</p>
 
                 @if ($soldItems->isEmpty())
-                    <p class="text-neutral-500 text-center">Belum ada barang yang terjual.</p>
+                    <p class="italic">Belum ada barang yang terjual.</p>
                 @else
                     <table class="w-full border-collapse border border-neutral-300">
                         <thead>
                             <tr class="bg-neutral-100">
-                                <th class="border border-neutral-300 px-4 py-2 text-center">N0</th>
+                                <th class="border border-neutral-300 px-4 py-2 text-center">No</th>
                                 <th class="border border-neutral-300 px-4 py-2 text-center">Nama Barang</th>
                                 <th class="border border-neutral-300 px-4 py-2 text-center">Tipe Barang</th>
                                 <th class="border border-neutral-300 px-4 py-2 text-center">Harga</th>

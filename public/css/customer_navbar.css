@@ -1,6 +1,7 @@
 body {
     font-family: "Poppins", sans-serif;
-    background: linear-gradient(160deg, #b3b3b3, #ffffff);
+    background: #dbdbdb;
+    /* background: linear-gradient(160deg, #b3b3b3, #ffffff); */
 }
 
 ul {
@@ -43,7 +44,7 @@ hr {
     padding: 0;
 }
 
-.color_main {
+.color_dark {
     color: #363636 !important;
 }
 
@@ -55,8 +56,12 @@ hr {
     color: #cfccc1 !important;
 }
 
-.color_maroonMain {
-    color: #6d2932 !important;
+.color_maroon {
+    color: #8b3440 !important;
+}
+
+.color_lightMaroon {
+    color: #e26172 !important;
 }
 
 .color_darkMaroon {
@@ -64,30 +69,36 @@ hr {
 }
 
 /* background jual lelang */
-.bg_jualLelang {
+.bg_dark {
     background: linear-gradient(160deg, #202020, #363636);
     border-radius: 10px;
     padding: 10px 10px;
     border: #505050 1px solid;
 }
 
-.bg_invite {
+.bg_maroon {
     background: linear-gradient(160deg, #501e24, #6d2932);
     border-radius: 10px;
     padding: 10px 10px;
     border: #702b33 1px solid;
 }
 
-/* background category */
-.bg_category {
-    background-color: #e6e6e6;
+.bg_cream {
+    background: linear-gradient(160deg, #e0d4a3, #f5f1e3);
     border-radius: 10px;
     padding: 10px 10px;
-    border: #e6e6e6 1px solid;
+    border: #f5f1e3 1px solid;
 }
 
-/* background jual/beli */
-.bg_jual-beli {
+.bg_home {
+    background: linear-gradient(160deg, #6d2932, #f5f1e3);
+    border-radius: 10px;
+    padding: 10px 10px;
+    border: #f5f1e3 1px solid;
+}
+
+/* background category */
+.bg_category {
     background-color: #e6e6e6;
     border-radius: 10px;
     padding: 15px 15px;
@@ -167,51 +178,53 @@ hr {
     border-radius: 5px !important;
 }
 
-.btn-jual {
+.btn_dark {
     background-color: #202020;
     border-color: #202020;
-    font-size: small;
     color: #ffffff;
-    font-weight: 600;
-    border-radius: 10px;
-    padding: 5px 20px 5px 20px;
+    font-size: 0.85em !important;
+    font-weight: 500;
+    border-radius: 15px;
+    padding: 8px 25px 8px 25px;
 }
 
-.btn-jual:hover {
+.btn_dark:hover {
     background-color: #202020;
-    color: #363636;
+    color: #ffffff;
     border-color: #202020;
     box-shadow: #202020 0px 0px 10px;
 }
 
 /* btn main */
 
-.btn-mainOutline {
+.btn_cream {
     background-color: #f5f1e3;
     border-color: #f5f1e3;
-    color: #6d2932;
-    font-weight: 600;
+    color: #948f7e;
+    font-size: 0.85em !important;
+    font-weight: 500;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-mainOutline:hover {
+.btn_cream:hover {
     background-color: #f5f1e3;
     color: #6d2932;
     border-color: #f5f1e3;
     box-shadow: #f5f1e3 0px 0px 10px;
 }
 
-.btn-main {
+.btn_maroon {
     background-color: #6d2932;
     border-color: #6d2932;
     color: #f5f1e3;
-    font-weight: 600;
+    font-size: 0.85em !important;
+    font-weight: 500;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
 
-.btn-main:hover {
+.btn_maroon:hover {
     background-color: #6d2932;
     color: #f5f1e3;
     border-color: #6d2932;
@@ -221,8 +234,9 @@ hr {
 .btn-primary {
     background-color: #202020;
     border-color: #202020;
+    font-size: 0.85em !important;
     border-radius: 15px;
-    font-weight: 600;
+    font-weight: 500;
     padding: 8px 25px 8px 25px;
 }
 
@@ -235,6 +249,7 @@ hr {
 .btn-secondary {
     background-color: #505050;
     border-color: #505050;
+    font-size: 0.85em !important;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
@@ -248,6 +263,7 @@ hr {
 .btn-light {
     background-color: #ececec;
     border-color: #ececec;
+    font-size: 0.85em !important;
     color: #202020;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
@@ -266,7 +282,8 @@ hr {
     background-color: #ffddd8;
     border-color: #ffddd8;
     color: #ff6a55;
-    font-weight: 600;
+    font-size: 0.85em !important;
+    font-weight: 500;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
@@ -282,7 +299,8 @@ hr {
     background-color: #fff2bc;
     border-color: #fff2bc;
     color: #dfbb2e;
-    font-weight: 600;
+    font-size: 0.85em !important;
+    font-weight: 500;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
@@ -298,7 +316,8 @@ hr {
     background-color: #dfffd3;
     border-color: #dfffd3;
     color: #83bf6e;
-    font-weight: 600;
+    font-size: 0.85em !important;
+    font-weight: 500;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
@@ -308,4 +327,16 @@ hr {
     color: #dfffd3;
     border-color: #83bf6e;
     box-shadow: #83bf6e 0px 0px 10px;
+}
+
+/* loading */
+
+.loadingProgressMaroon {
+    --tw-bg-opacity: 1;
+    background-color: rgb(109 41 50 / var(--tw-bg-opacity, 1)) /* #2563eb */;
+}
+
+.loadginCircleMaroon {
+    --tw-text-opacity: 1;
+    color: rgb(109 41 50 / var(--tw-text-opacity, 1)) /* #6366f1 */;
 }

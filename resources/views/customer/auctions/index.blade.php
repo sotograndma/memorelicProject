@@ -7,7 +7,7 @@
                 <p style="font-weight: bold !important" class="font-bold">Lelang Saya</p>
                 <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, sapiente!</p>
 
-                <button class="btn btn-primary"><a href="{{ route('customer.auctions.create') }}">Buat Lelang</a>
+                <button class="btn btn_maroon"><a href="{{ route('customer.auctions.create') }}">Buat Lelang</a>
                 </button>
 
                 @if (session('success'))

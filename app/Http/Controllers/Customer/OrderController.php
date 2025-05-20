@@ -18,7 +18,7 @@ class OrderController extends Controller
     // Menampilkan detail barang berdasarkan ID
     public function show($id)
     {
-        $item = Item::findOrFail($id); // Ambil data barang berdasarkan ID
+        $item = Item::with(['reviews.customer'])->findOrFail($id);
         return view('customer.orders.show', compact('item'));
     }
 }

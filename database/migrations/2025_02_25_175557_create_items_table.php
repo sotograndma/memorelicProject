@@ -21,7 +21,7 @@ return new class extends Migration {
             // Fields tambahan
             $table->enum('condition', ['Used', 'Excellent', 'Brand New', 'Restored'])->nullable(); // Condition: Used – Excellent, Brand New, etc.
             $table->integer('min_order')->default(1); // Min. Order
-            $table->timestamp('year_of_origin')->nullable(); // Tahun Pembuatan
+            $table->date('year_of_origin')->nullable(); // Tahun Pembuatan
             $table->string('material')->nullable(); // Material
             $table->string('height')->nullable(); // Dimensions (e.g., Height: 30 cm, Width: 15 cm)
             $table->string('width')->nullable(); // Dimensions (e.g., Height: 30 cm, Width: 15 cm)

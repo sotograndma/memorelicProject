@@ -93,13 +93,66 @@ td {
     padding: 15px 30px !important;
 }
 
-/* btn main */
-
-.btn-primary {
-    font-size: 0.85em !important;
+.btn_dark {
     background-color: #202020;
     border-color: #202020;
+    font-size: small;
+    color: #ffffff;
+    font-size: 0.85em !important;
+    font-weight: 500;
+    border-radius: 10px;
+    padding: 5px 20px 5px 20px;
+}
+
+.btn_dark:hover {
+    background-color: #202020;
+    color: #363636;
+    border-color: #202020;
+    box-shadow: #202020 0px 0px 10px;
+}
+
+/* btn main */
+
+.btn_cream {
+    background-color: #f5f1e3;
+    border-color: #f5f1e3;
+    font-size: 0.85em !important;
+    color: #6d2932;
+    font-weight: 500;
     border-radius: 15px;
+    padding: 8px 25px 8px 25px;
+}
+
+.btn_cream:hover {
+    background-color: #f5f1e3;
+    color: #6d2932;
+    border-color: #f5f1e3;
+    box-shadow: #f5f1e3 0px 0px 10px;
+}
+
+.btn_maroon {
+    background-color: #6d2932;
+    border-color: #6d2932;
+    color: #f5f1e3;
+    font-size: 0.85em !important;
+    font-weight: 500;
+    border-radius: 15px;
+    padding: 8px 25px 8px 25px;
+}
+
+.btn_maroon:hover {
+    background-color: #6d2932;
+    color: #f5f1e3;
+    border-color: #6d2932;
+    box-shadow: #6d2932 0px 0px 10px;
+}
+
+.btn-primary {
+    background-color: #202020;
+    border-color: #202020;
+    font-size: 0.85em !important;
+    border-radius: 15px;
+    font-weight: 500;
     padding: 8px 25px 8px 25px;
 }
 
@@ -110,10 +163,10 @@ td {
 }
 
 .btn-secondary {
-    font-size: 0.85em !important;
     background-color: #505050;
     border-color: #505050;
     border-radius: 15px;
+    font-size: 0.85em !important;
     padding: 8px 25px 8px 25px;
 }
 
@@ -124,9 +177,9 @@ td {
 }
 
 .btn-light {
-    font-size: 0.85em !important;
     background-color: #ececec;
     border-color: #ececec;
+    font-size: 0.85em !important;
     color: #202020;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
@@ -142,11 +195,11 @@ td {
 /* btn color */
 
 .btn-danger {
-    font-size: 0.85em !important;
     background-color: #ffddd8;
+    font-size: 0.85em !important;
     border-color: #ffddd8;
     color: #ff6a55;
-    font-weight: 600;
+    font-weight: 500;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
@@ -159,11 +212,11 @@ td {
 }
 
 .btn-warning {
-    font-size: 0.85em !important;
     background-color: #fff2bc;
     border-color: #fff2bc;
     color: #dfbb2e;
-    font-weight: 600;
+    font-size: 0.85em !important;
+    font-weight: 500;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }
@@ -176,11 +229,11 @@ td {
 }
 
 .btn-success {
-    font-size: 0.85em !important;
     background-color: #dfffd3;
     border-color: #dfffd3;
     color: #83bf6e;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 0.85em !important;
     border-radius: 15px;
     padding: 8px 25px 8px 25px;
 }

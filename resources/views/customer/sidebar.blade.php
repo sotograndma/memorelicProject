@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard Customer - Memorelic</title>
+    <link rel="icon" type="image/png" href="{{ asset('image/hootbert/hootbert_half.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,7 +28,7 @@
             </div>
 
             <p class="mb-2 px-3 fw-medium">HALAMAN JUAL/LELANG</p>
-
+            
             <li class="nav-item mb-2">
                 <a href="{{ route('customer.items.index') }}" class="nav-link d-flex align-items-center">
                     <i class="bi bi-box-arrow-in-up me-2"></i> Jual Barang
@@ -40,9 +41,15 @@
                 </a>
             </li>
 
-            <li class="nav-item mb-5">
+            <li class="nav-item mb-2">
                 <a href="{{ route('customer.sold.items') }}" class="nav-link d-flex align-items-center">
                     <i class="bi bi-bag-check me-2"></i> Barang Terjual
+                </a>
+            </li>
+            
+            <li class="nav-item mb-5">
+                <a href="{{ route('customer.transactions.manage') }}" class="nav-link d-flex align-items-center">
+                    <i class="bi bi-truck me-2"></i> Kelola Pengiriman
                 </a>
             </li>
 
@@ -100,6 +107,9 @@
             </div>
         </div>
     </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
 
 </body>
 
