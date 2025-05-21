@@ -59,7 +59,13 @@
                             class="hidden absolute bg_dropdown text-white rounded shadow-lg mt-2 w-40 z-50">
                             <li><a href="{{ route('profile.edit') }}"
                                     class="block px-4 py-2 bg_dropdownSelect">Profil</a></li>
-                            <li><a href="{{ route('logout') }}" class="block px-4 py-2 bg_dropdownSelect">Logout</a>
+                            <li>
+                                <form method="POST" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="block px-4 py-2 bg_dropdownSelect text-left w-full">
+                                        Logout
+                                    </button>
+                                </form>
                             </li>
                         </ul>
                     </li>

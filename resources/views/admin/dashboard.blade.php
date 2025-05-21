@@ -46,11 +46,14 @@
                     <i class="bi bi-truck me-2"></i> Kurir
                 </a>
             </li>
-
+            
             <li class="nav-item mb-2">
-                <a href="{{ route('logout') }}" class="nav-link d-flex align-items-center">
-                    <i class="bi bi-box-arrow-right me-2"></i> Logout
-                </a>
+                <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button style="padding: 10px 20px !important;" type="submit" class="nav-link d-flex align-items-center w-100 bg-transparent border-0 p-0 text-start">
+                        <i class="bi bi-box-arrow-right me-2"></i> Logout
+                    </button>
+                </form>
             </li>
 
         </ul>
