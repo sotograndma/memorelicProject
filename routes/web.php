@@ -15,6 +15,7 @@ use App\Http\Controllers\CourierController;
 use App\Http\Controllers\Customer\TransactionController;
 use App\Http\Controllers\Customer\ItemReviewController;
 use App\Http\Controllers\Customer\SellerVerificationController;
+use App\Http\Controllers\WishlistController;
 
 
 Route::get('/', function () {
@@ -150,6 +151,9 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/seller/agreement', [SellerVerificationController::class, 'agreement'])->name('seller.verification.agreement');
     Route::post('/seller/verify', [SellerVerificationController::class, 'verify'])->name('seller.verification.confirm');
 
+    Route::post('/customer/wishlist', [WishlistController::class, 'store'])->name('customer.wishlist.store');
+    Route::delete('/customer/wishlist/{id}', [WishlistController::class, 'destroy'])->name('customer.wishlist.destroy');
+    Route::get('/customer/wishlist', [WishlistController::class, 'index'])->name('customer.wishlist.index');
 
 
 });

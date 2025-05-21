@@ -134,14 +134,23 @@
                     <div class="my-4"><hr></div>
 
                     <div class="d-flex gap">
-                        <button style="font-size: 0.85em; width: 100%;"  class="btn btn-danger mt-2 me-2 w-100">
+                        <form class="me-2" method="POST" action="{{ route('customer.wishlist.store') }}" style="width: 100%;">
+                            @csrf
+                            <input type="hidden" name="item_id" value="{{ $item->id ?? '' }}">
+                            <input type="hidden" name="auction_id" value="{{ $auction->id ?? '' }}">
+
+                            <button type="submit" style="font-size: 0.85em; width: 100%;" class="btn btn-danger mt-2">
+                                <div class="d-flex gap-2 align-items-center justify-content-center">
+                                    <i class="bi bi-heart-fill" style="position: relative; top: 1px"></i>
+                                    Wishlist
+                                </div>
+                            </button>
+                        </form>
+
+                        <button onclick="copyLink()" style="font-size: 0.85em; width: 100%;" class="btn btn-warning mt-2">
                             <div class="d-flex gap-2 align-items-center justify-content-center">
-                                <i class="bi bi-heart-fill"></i> Wishlist
-                            </div>
-                        </button>
-                        <button style="font-size: 0.85em; width: 100%;"  class="btn btn-warning mt-2 w-100">
-                            <div class="d-flex gap-2 align-items-center justify-content-center">
-                                <i class="bi bi-share-fill"></i> Share
+                                <i class="bi bi-share-fill" style="position: relative; top: 1px"></i>
+                                Share
                             </div>
                         </button>
                     </div>

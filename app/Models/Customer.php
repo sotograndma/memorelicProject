@@ -64,4 +64,11 @@ class Customer extends Authenticatable
 
         return $customer;
     }
+
+    // app/Models/Customer.php
+    public function wishlists()
+    {
+        return $this->hasMany(Wishlist::class);
+    }
+
 }
