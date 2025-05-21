@@ -118,7 +118,7 @@
             </div>
 
             @if (session('success'))
-                <div class="bg-green-400 text-white p-2 mt-4 rounded">
+                <div class="bg-green-700 text-white p-2 mt-4 rounded-xl">
                     {{ session('success') }}
                 </div>
             @endif
@@ -194,6 +194,6 @@
         </div>
     </div> --}}
 
-    <div style="height: 500px"></div>
+    <div style="height: 800px"></div>
     
 @endsection

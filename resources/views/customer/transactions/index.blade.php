@@ -89,9 +89,15 @@
                                                 @break
 
                                             @case('waiting_review')
-                                                <a href="{{ route('customer.payment.completed', $transaction->id) }}" class="text-orange-500 underline">
-                                                    Menunggu Review
-                                                </a>
+                                                @if ($transaction->auction)
+                                                    {{-- Jika berasal dari lelang, langsung tandai sebagai selesai --}}
+                                                    <span class="text-green-500">Selesai</span>
+                                                @else
+                                                    {{-- Kalau bukan lelang, tampilkan link untuk memberi review --}}
+                                                    <a href="{{ route('customer.payment.completed', $transaction->id) }}" class="text-orange-500 underline">
+                                                        Menunggu Review
+                                                    </a>
+                                                @endif
                                                 @break
 
                                             @case('completed')
@@ -136,7 +142,7 @@
         </div>
     </div>
 
-    <div style="height: 300px"></div>
+    <div style="height: 800px"></div>
 
     <div style="margin-top: 500px" class="modal fade" id="confirmReceivedModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
         <div class="modal-dialog">

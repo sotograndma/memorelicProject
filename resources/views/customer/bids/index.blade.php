@@ -104,12 +104,12 @@
     <div id="mostViewed" class="d-flex justify-content-center mt-5">
         <div style="width: 1200px">
             <div class="color_dark d-flex align-items-end justify-content-betstartween px-2 p-3">
-                <p class="fw-bold fs-6">All Items</p>
+                <p class="fw-bold fs-6">All Auctions</p>
                 {{-- <a style="font-style: italic; font-size: 0.8em">see all</a> --}}
             </div>
 
             @if (session('success'))
-                <div class="bg-green-500 text-white p-2 mt-4 rounded">
+                <div class="bg-green-700 text-white p-2 mt-4 rounded-xl">
                     {{ session('success') }}
                 </div>
             @endif
@@ -177,5 +177,5 @@
         </div>
     </div> --}}
 
-    <div style="height: 500px"></div>
+    <div style="height: 800px"></div>
 @endsection

@@ -71,7 +71,7 @@
 
             <li class="nav-item mb-2">
                 <a href="{{ route('profile.edit') }}" class="nav-link d-flex align-items-center">
-                    <i class="bi bi-person-circle me-2"></i> Profil
+                    <i class="bi bi-person-circle me-2"></i> {{ Auth::user()->name }}
                 </a>
             </li>
             

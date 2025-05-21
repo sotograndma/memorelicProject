@@ -1,55 +1,30 @@
 @extends('customer.dashboard')
 
 @section('content')
-    
-    {{-- <div id="home" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item carousel-item_navbar active" data-bs-interval="10000">
-                <img src="/image/1.png" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item carousel-item_navbar" data-bs-interval="2000">
-                <img src="/image/1.png" class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item carousel-item_navbar">
-                <img src="/image/1.png" class="d-block w-100" alt="...">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#home" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#home" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
+
+    @php
+        $isVerified = Auth::user()->userable->is_verified_seller ?? false;
+    @endphp
 
     <div class="d-flex justify-content-center mt-5">
         <div style="width: 1200px">
-            <div class="color_dark d-flex justify-content-between px-2 p-3 mt-3">
-                <p class="fw-bold fs-4">Category</p>
-            </div>
+            <div style="border: 0px" class="bg_cream p-4 text-white rounded-xl">
+                <div class="d-flex justify-content-between align-items-end">
+                    <div>
+                        <p class="fs-1 fw-bold color_maroon mb-3">Temukan Barang Antik<br>Lewat Lelang</p>
+                        
+                        <p style="width: 700px" class="color_dark">
+                            Setiap tawaran membawamu lebih dekat pada harta karun bersejarah. Ikuti proses lelang yang transparan dan menegangkan—dari koleksi langka hingga benda bersejarah bernilai tinggi. 
+                            <span class="color_maroon fw-bold">Jangan lewatkan, mungkin barang incaranmu akan jatuh ke tanganmu hari ini!</span>
+                        </p>
 
-            <div class="d-flex justify-content-between">
-                <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="max-width: 200px;" src="/image/category/koleksi.png" alt="">
-                    <p class="mt-3 fs-6 main_color fw-medium">Antik & Koleksi Kuno</p>
-                </div>
-                <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="max-width: 200px;" src="/image/category/jam.png" alt="">
-                    <p class="mt-3 fs-6 main_color fw-medium">Jam Antik & Aksesoris Waktu</p>
-                </div>
-                <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="max-width: 200px;" src="/image/category/radio.png" alt="">
-                    <p class="mt-3 fs-6 main_color fw-medium">Elektronik & Radio Vintage</p>
-                </div>
-                <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="max-width: 200px;" src="/image/category/kursi.png" alt="">
-                    <p class="mt-3 fs-6 main_color fw-medium">Furnitur & Dekorasi Antik</p>
-                </div>
-                <div class="p-3 bg_category text-center">
-                    <img class="w-100" style="max-width: 200px;" src="/image/category/kris.png" alt="">
-                    <p class="mt-3 fs-6 main_color fw-medium">Senjata & Peralatan Tradisional</p>
+                        <div class="d-flex mt-4">
+                            <a href="{{ $isVerified ? route('customer.auctions.index') : route('seller.verification.prompt') }}"
+                                class="btn btn_maroon me-3">Mulai Lelang Barang Anda</a>
+                            <a href="#mostViewed" class="btn btn_cream">Lihat Semua Lelang</a>
+                        </div>
+                    </div>
+                    <img style="position: relative; top: 24px; width: 250px; !important;" src="/image/hootbert/hootbert_half.png" alt="Mulai jualan">
                 </div>
             </div>
         </div>
@@ -57,68 +32,288 @@
 
     <div class="d-flex justify-content-center mt-5">
         <div style="width: 1200px">
-            <div class="color_dark d-flex justify-content-center px-2 p-3 mt-3">
-                <p class="fw-bold fs-4">Ongoing Highest Bid</p>
+            <ul class="nav nav-underline nav-justified" id="auctionTabs" role="tablist">
+                @php
+                    $categories = [
+                        'Collectibles' => ['label' => 'Antik & Koleksi Kuno', 'img' => '/image/category/koleksi.png'],
+                        'Accessories' => ['label' => 'Jam Antik & Aksesoris Waktu', 'img' => '/image/category/jam.png'],
+                        'Electronics' => ['label' => 'Elektronik & Radio Vintage', 'img' => '/image/category/radio.png'],
+                        'Furniture' => ['label' => 'Furnitur & Dekorasi Antik', 'img' => '/image/category/kursi.png'],
+                        'Traditional Weapons' => ['label' => 'Senjata & Peralatan Tradisional', 'img' => '/image/category/kris.png'],
+                    ];
+                    $first = true;
+                @endphp
+
+                @foreach($categories as $key => $cat)
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link {{ $first ? 'active' : '' }} color_dark d-flex flex-column align-items-center"
+                            id="auction-tab-{{ $key }}"
+                            data-bs-toggle="tab"
+                            data-bs-target="#auction-pane-{{ $key }}"
+                            type="button"
+                            role="tab"
+                            aria-controls="auction-pane-{{ $key }}"
+                            aria-selected="{{ $first ? 'true' : 'false' }}">
+                            {{-- <img src="{{ $cat['img'] }}" style="max-width: 60px;" class="mb-2"> --}}
+                            <span>{{ $cat['label'] }}</span>
+                        </button>
+                    </li>
+                    @php $first = false; @endphp
+                @endforeach
+            </ul>
+
+            <div class="tab-content mt-4" id="auctionTabContent">
+                @php $first = true; @endphp
+                @foreach($categories as $key => $cat)
+                    <div class="tab-pane fade {{ $first ? 'show active' : '' }}" id="auction-pane-{{ $key }}" role="tabpanel" aria-labelledby="auction-tab-{{ $key }}">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            @foreach($auctions->where('category', $key) as $auction)
+                                <div class="bg_category">
+                                    <a href="{{ route('customer.bids.show', $auction->id) }}">
+                                        <img src="{{ asset('storage/' . $auction->image_path) }}" alt="{{ $auction->name }}"
+                                            class="w-full h-48 object-cover rounded-lg">
+                                    </a>
+
+                                    <p class="fs-5 mt-2 truncate">{{ $auction->name }}</p>
+
+                                    <p class="fw-bold">Harga Awal: Rp
+                                        {{ number_format($auction->starting_bid, 0, ',', '.') }}</p>
+
+                                    <p class="text-sm text-gray-500 flex items-center mt-4">
+                                        Mulai: {{ date('d M Y H:i', strtotime($auction->start_time)) }}
+                                    </p>
+                                    <p class="text-sm text-gray-500 flex items-center mt-1">
+                                        Berakhir: {{ date('d M Y H:i', strtotime($auction->end_time)) }}
+                                    </p>
+
+                                    <div class="mt-4 d-flex justify-content-end">
+                                        <a href="{{ route('customer.bids.show', $auction->id) }}"
+                                            style="font-size: 0.85em" class="btn btn_maroon">Lihat</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @php $first = false; @endphp
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+
+    <div id="mostViewed" class="d-flex justify-content-center mt-5">
+        <div style="width: 1200px">
+            <div class="color_dark d-flex align-items-end justify-content-betstartween px-2 p-3">
+                <p class="fw-bold fs-6">All Auctions</p>
+                {{-- <a style="font-style: italic; font-size: 0.8em">see all</a> --}}
             </div>
 
-            <div class="d-flex justify-content-between">
-                    <div id="home" class="carousel slide" data-bs-ride="carousel">
-                        <div class="carousel-inner">
-                            <div class="carousel-item carousel-item_navbar active" data-bs-interval="10000">
-                                <img src="/image/1.png" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item carousel-item_navbar" data-bs-interval="2000">
-                                <img src="/image/1.png" class="d-block w-100" alt="...">
-                            </div>
-                            <div class="carousel-item carousel-item_navbar">
-                                <img src="/image/1.png" class="d-block w-100" alt="...">
+            @if (session('success'))
+                <div class="bg-green-700 text-white p-2 mt-4 rounded-xl">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @foreach ($auctions as $auction)
+                    <div class="bg_category">
+                        <a href="{{ route('customer.bids.show', $auction->id) }}">
+                            <img src="{{ asset('storage/' . $auction->image_path) }}" alt="{{ $auction->name }}"
+                                class="w-full h-48 object-cover rounded-lg">
+                        </a>
+
+                        <p class="fs-5 mt-2 truncate">{{ $auction->name }}</p>
+
+                        <p class="fw-bold">Harga Awal: Rp
+                            {{ number_format($auction->starting_bid, 0, ',', '.') }}</p>
+
+                        <p class="text-sm text-gray-500 flex items-center mt-4">
+                            Mulai: {{ date('d M Y H:i', strtotime($auction->start_time)) }}
+                        </p>
+                        <p class="text-sm text-gray-500 flex items-center mt-1">
+                            Berakhir: {{ date('d M Y H:i', strtotime($auction->end_time)) }}
+                        </p>
+
+                        <div class="mt-4 d-flex justify-content-end">
+                            <a href="{{ route('customer.bids.show', $auction->id) }}"
+                                style="font-size: 0.85em" class="btn btn_maroon">Lihat</a>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+        </div>
+    </div>
+
+    <div class="mt-5 d-flex justify-content-center">
+        <hr style="width: 1200px">
+    </div>
+
+    @php
+        $isVerified = Auth::user()->userable->is_verified_seller ?? false;
+    @endphp
+
+    <div class="d-flex justify-content-center mt-5">
+        <div style="width: 1200px">
+            <div style="border: 0px" class="bg_cream p-4 text-white rounded-xl">
+                <div class="d-flex justify-content-between align-items-end">
+                    <div>
+                        <p class="fs-1 fw-bold color_maroon mb-3">Temukan Harta Karun<br>dari Masa Lalu</p>
+                        
+                        <p style="width: 700px" class="color_dark">
+                            Setiap barang punya cerita. Jelajahi koleksi barang antik yang tersedia, dari jam kuno hingga dekorasi penuh sejarah, dan rasakan sensasi berburu harta karun yang tak ternilai.
+                            <span class="color_maroon fw-bold">Siapa tahu, barang impianmu menunggu di sini.</span>
+                        </p>
+
+                        <div class="d-flex mt-4">
+                            <a href="{{ $isVerified ? route('customer.items.index') : route('seller.verification.prompt') }}"
+                                class="btn btn_maroon me-3">Mulai Jual Barang Anda</a>
+                            <a href="#mostViewed" class="btn btn_cream">Lihat Seluruh Barang</a>
+                        </div>
+                    </div>
+                    <img style="position: relative; top: 24px; width: 250px; !important;" src="/image/hootbert/hootbert_half.png" alt="Mulai jualan">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-center mt-5">
+        <div style="width: 1200px">
+            <ul class="nav nav-underline nav-justified" id="categoryTabs" role="tablist">
+                @php
+                    $categories = [
+                        'Collectibles' => ['label' => 'Antik & Koleksi Kuno', 'img' => '/image/category/koleksi.png'],
+                        'Accessories' => ['label' => 'Jam Antik & Aksesoris Waktu', 'img' => '/image/category/jam.png'],
+                        'Electronics' => ['label' => 'Elektronik & Radio Vintage', 'img' => '/image/category/radio.png'],
+                        'Furniture' => ['label' => 'Furnitur & Dekorasi Antik', 'img' => '/image/category/kursi.png'],
+                        'Traditional Weapons' => ['label' => 'Senjata & Peralatan Tradisional', 'img' => '/image/category/kris.png'],
+                    ];
+                    $first = true;
+                @endphp
+
+                @foreach($categories as $key => $cat)
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link {{ $first ? 'active' : '' }} color_dark d-flex flex-column align-items-center" 
+                            id="tab-{{ $key }}" 
+                            data-bs-toggle="tab" 
+                            data-bs-target="#pane-{{ $key }}" 
+                            type="button" 
+                            role="tab" 
+                            aria-controls="pane-{{ $key }}" 
+                            aria-selected="{{ $first ? 'true' : 'false' }}">
+                            {{-- <img src="{{ $cat['img'] }}" style="max-width: 60px;" class="mb-2"> --}}
+                            <span>{{ $cat['label'] }}</span>
+                        </button>
+                    </li>
+                    @php $first = false; @endphp
+                @endforeach
+            </ul>
+
+            <div class="tab-content mt-4" id="categoryTabContent">
+                @php $first = true; @endphp
+                @foreach($categories as $key => $cat)
+                    <div class="tab-pane fade {{ $first ? 'show active' : '' }}" id="pane-{{ $key }}" role="tabpanel" aria-labelledby="tab-{{ $key }}">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                            @foreach($items->where('category', $key) as $item)
+                                <div class="bg_category">
+                                    <a href="{{ route('customer.orders.show', $item->id) }}">
+                                        <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
+                                            class="w-full h-48 object-cover rounded-lg">
+                                    </a>
+
+                                    <p class="fs-5 mt-2 truncate">{{ $item->name }}</p>
+
+                                    <p class="fw-bold">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+
+                                    <p class="text-sm text-gray-500 flex items-center mt-4">
+                                        {{ $item->shipping_locations ?? '-' }}
+                                    </p>
+
+                                    @php
+                                        $averageRating = round($item->reviews->avg('rating'), 1);
+                                        $totalRating = $item->reviews->count();
+                                    @endphp
+
+                                    <p class="text-neutral-500">
+                                        Terjual {{ $item->sold_count }} | 
+                                        {{ $averageRating }} 
+                                        @for ($i = 1; $i <= 5; $i++)
+                                            <i class="bi {{ $i <= $averageRating ? 'bi-star-fill text-warning' : 'bi-star text-warning' }}"></i>
+                                        @endfor
+                                        ({{ $totalRating }} rating)
+                                    </p>
+
+                                    <div class="mt-4 d-flex justify-content-end">
+                                        <a href="{{ route('customer.orders.show', $item->id) }}"
+                                            style="font-size: 0.85em" class="btn btn_maroon">Lihat</a>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @php $first = false; @endphp
+                @endforeach
+            </div>
+        </div>
+    </div>
+
+    <div id="#mostViewed" class="d-flex justify-content-center mt-5">
+        <div style="width: 1200px">
+            <div class="color_dark d-flex align-items-end justify-content-betstartween px-2 p-3">
+                <p class="fw-bold fs-6">All Items</p>
+                {{-- <a style="font-style: italic; font-size: 0.8em"></a> --}}
+            </div>
+
+            @if (session('success'))
+                <div class="bg-green-700 text-white p-2 mt-4 rounded-xl">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                @foreach ($items as $item)
+                    @if ($item->status == 'available')
+
+                        <div class="bg_category">
+                            <a href="{{ route('customer.orders.show', $item->id) }}">
+                                <img src="{{ asset('storage/' . $item->image_path) }}" alt="{{ $item->name }}"
+                                    class="w-full h-48 object-cover rounded-lg">
+                            </a>
+
+                            <p class="fs-5 mt-2 truncate">{{ $item->name }}</p>
+
+                            <p class="fw-bold">Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+
+                            <p class="text-sm text-gray-500 flex items-center mt-4">
+                                {{ $item->shipping_locations ?? '-' }}
+                            </p>
+
+                            @php
+                                $averageRating = round($item->reviews->avg('rating'), 1);
+                                $totalRating = $item->reviews->count();
+                            @endphp
+
+                            <p class="text-neutral-500">
+                                Terjual {{ $item->sold_count }} | 
+                                {{ $averageRating }} 
+                                @for ($i = 1; $i <= 5; $i++)
+                                    <i class="bi {{ $i <= $averageRating ? 'bi-star-fill text-warning' : 'bi-star text-warning' }}"></i>
+                                @endfor
+                                ({{ $totalRating }} rating)
+                            </p>
+
+                            <div class="mt-4 d-flex justify-content-end">
+                                <a href="{{ route('customer.orders.show', $item->id) }}"
+                                    style="font-size: 0.85em" class="btn btn_maroon">Lihat</a>
                             </div>
                         </div>
-                        <button class="carousel-control-prev" type="button" data-bs-target="#home" data-bs-slide="prev">
-                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Previous</span>
-                        </button>
-                        <button class="carousel-control-next" type="button" data-bs-target="#home" data-bs-slide="next">
-                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                            <span class="visually-hidden">Next</span>
-                        </button>
-                    </div>
+
+                    @endif
+                @endforeach
             </div>
         </div>
     </div>
 
-    <div class="d-flex justify-content-center mt-5">
-        <div style="width: 1200px">
-            <div class="color_dark d-flex justify-content-between px-2 p-3 mt-3">
-                <p class="fw-bold fs-4">Most Purchase</p>
-                <a style="font-style: italic; font-size: 0.8em">see all</a>
-            </div>
-
-            <div class="d-flex justify-content-between">
-                <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
-                    <p class="mt-3 fw-medium">lorem ipsum</p>
-                </div>
-                <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
-                    <p class="mt-3 fw-medium">lorem ipsum</p>
-                </div>
-                <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
-                    <p class="mt-3 fw-medium">lorem ipsum</p>
-                </div>
-                <div class="p-3 bg_category me-3 text-center">
-                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
-                    <p class="mt-3 fw-medium">lorem ipsum</p>
-                </div>
-                <div class="p-3 bg_category text-center">
-                    <img class="w-100" style="max-width: 500px;" src="/image/3.png" alt="">
-                    <p class="mt-3 fw-medium">lorem ipsum</p>
-                </div>
-            </div>
-        </div>
-    </div> --}}
-
-    <div style="height: 1000px"></div>
+    <div style="height: 800px"></div>
 
 @endsection

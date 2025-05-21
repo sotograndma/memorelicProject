@@ -218,14 +218,15 @@
                 </div>
             </div>
 
-            <div class="mt-5">
-                <h5 class="fw-bold">Ulasan Pembeli</h5>
+            <div class="mt-5 bg_category">
+                <p class="fw-bold fs-6">Ulasan Pembeli</p>
+                <p class="mb-4">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ad, sapiente!</p>
 
                 @if ($item->reviews->count() > 0)
                     @foreach ($item->reviews as $review)
-                        <div class="border rounded p-3 mb-3 bg-white shadow-sm">
+                        <div class="rounded-xl p-3 mb-3 bg-white">
                             <div class="d-flex justify-content-between align-items-center mb-1">
-                                <p class="mb-0 fw-semibold">{{ $review->customer->name ?? 'Pengguna' }}</p>
+                                <p class="mb-0 fw-semibold">{{ $review->customer?->user?->name ?? 'Pengguna' }}</p>
                                 <small class="text-muted">{{ $review->created_at->diffForHumans() }}</small>
                             </div>
                             <div class="mb-1">
@@ -249,5 +250,5 @@
         </div>
     </div>
 
-    <div style="height: 500px"></div>
+    <div style="height: 800px"></div>
 @endsection

@@ -11,7 +11,7 @@
                 </button>
 
                 @if (session('success'))
-                    <div class="bg-green-500 text-white p-2 mt-4 rounded">
+                    <div class="bg-green-700 text-white p-2 mt-4 rounded-xl">
                         {{ session('success') }}
                     </div>
                 @endif

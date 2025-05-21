@@ -51,7 +51,7 @@
                         <div class="d-flex align-items-center">
                             <i class="bi bi-person-circle me-2"></i>
                             <button onclick="toggleDropdown('akunDropdown')" class="text-white rounded">
-                                Akun ▼
+                                {{ Auth::user()->name }} ▼
                             </button>
                         </div>
                         
@@ -176,11 +176,46 @@
         });
     </script>
 
+    <script>
+        document.querySelectorAll('.faq-question').forEach(button => {
+        button.addEventListener('click', () => {
+        const faqItem = button.parentElement;
+        const isActive = faqItem.classList.contains('active');
+
+        document.querySelectorAll('.faq-item').forEach(item => {
+            item.classList.remove('active');
+        });
+
+                if (!isActive) {
+                    faqItem.classList.add('active');
+                }
+            });
+        });
+    </script>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://unpkg.com/flowbite@1.6.5/dist/flowbite.min.js"></script>
     
 
     @yield('content')
+
+    <div class="rounded-xl p-2">
+        <footer class="bg_dark text-white mt-5 p-5">
+            <div class="">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <p class="fw-bold fs-1">Memorelic</p>
+                        <p class="italic">Koleksi barang antik, langka, dan penuh sejarah. Temukan cerita di balik setiap benda.</p>
+                    </div>
+                </div>
+                <hr class="my-5">
+                <div class="text-center italic">
+                    <small>© {{ date('Y') }} Memorelic. All rights reserved.</small>
+                </div>
+            </div>
+        </footer>
+    </div>
+
 </body>
 
 </html>

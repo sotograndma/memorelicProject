@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CustomerController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Customer\HomeController;
 use App\Http\Controllers\Customer\ItemController;
 use App\Http\Controllers\Customer\AuctionController;
 use App\Http\Controllers\Customer\OrderController;
@@ -70,9 +71,7 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->group(function () {
 Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::get('/customer/dashboard', [CustomerController::class, 'index'])->name('customer.dashboard');
     
-    Route::get('/customer/home', function () {
-        return view('customer.home');
-    })->name('customer.home');
+    Route::get('/customer/home', [HomeController::class, 'index'])->name('customer.home');
 
     Route::get('/customer/aboutus', function () {
         return view('customer.aboutus');
@@ -163,9 +162,9 @@ Route::middleware(['auth', 'role:courier'])->prefix('courier')->group(function (
 });
 
 // Dashboard umum
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

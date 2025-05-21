@@ -10,7 +10,7 @@
                         Barang</a></button>
 
                 @if (session('success'))
-                    <div class="bg-green-300 text-white p-2 mt-4 rounded-lg">
+                    <div class="bg-green-700 text-white p-2 mt-4 rounded-xl">
                         {{ session('success') }}
                     </div>
                 @endif
