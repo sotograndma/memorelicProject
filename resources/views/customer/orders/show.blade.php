@@ -163,7 +163,12 @@
                         </div>
                     @endif
 
-                    <button style="font-size: 0.85em; width: 100%;" class="btn btn_cream mt-2">Add to Cart</button>
+                    <form action="{{ route('customer.cart.add', ['id' => $item->id]) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="btn btn_cream mt-2" style="font-size: 0.85em; width: 100%;">
+                            Add to Cart
+                        </button>
+                    </form>
 
                     <div class="mt-4">
                         <table>

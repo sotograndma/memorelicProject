@@ -16,6 +16,7 @@ use App\Http\Controllers\Customer\TransactionController;
 use App\Http\Controllers\Customer\ItemReviewController;
 use App\Http\Controllers\Customer\SellerVerificationController;
 use App\Http\Controllers\WishlistController;
+use App\Http\Controllers\Customer\CartController;
 
 
 Route::get('/', function () {
@@ -115,7 +116,7 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     // Halaman Transaksi
     Route::get('/transactions', [TransactionController::class, 'transactionHistory'])->name('customer.transactions.history');
     Route::get('/checkout/{item_id}', [TransactionController::class, 'checkout'])->name('customer.checkout');
-    Route::post('/checkout/{item_id}', [TransactionController::class, 'processCheckout'])->name('customer.checkout.process');
+    Route::post('/checkout/{item_id?}', [TransactionController::class, 'processCheckout'])->name('customer.checkout.process');
 
     // Halaman Kode Pembayaran
     Route::get('/payment/code/{transaction_id}', [TransactionController::class, 'paymentCode'])->name('customer.payment.code');
@@ -155,6 +156,12 @@ Route::middleware(['auth', 'role:customer'])->group(function () {
     Route::delete('/customer/wishlist/{id}', [WishlistController::class, 'destroy'])->name('customer.wishlist.destroy');
     Route::get('/customer/wishlist', [WishlistController::class, 'index'])->name('customer.wishlist.index');
 
+    // Shopping Cart
+    Route::post('/customer/cart/add/{id}', [CartController::class, 'addToCart'])->name('customer.cart.add');
+    Route::get('/customer/cart', [CartController::class, 'viewCart'])->name('customer.cart.view');
+    Route::post('/customer/cart/remove/{id}', [CartController::class, 'removeFromCart'])->name('customer.cart.remove');
+    Route::post('/customer/cart/checkout', [CartController::class, 'checkoutCart'])->name('customer.cart.checkout');
+    Route::get('/checkout-cart', [TransactionController::class, 'checkout'])->name('customer.checkout.cart');
 
 });
 

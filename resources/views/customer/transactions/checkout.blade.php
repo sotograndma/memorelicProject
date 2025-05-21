@@ -7,10 +7,10 @@
 
                 <p class="fw-bold fs-5 mb-4">Checkout</p>
 
-                <form action="{{ route('customer.checkout.process', ['item_id' => $auction ? $auction->id : $item->id]) }}" method="POST">
+                <form action="{{ route('customer.checkout.process', ['item_id' => $fromCart ? 0 : ($auction ? $auction->id : $item->id)]) }}" method="POST">
                     @csrf
-                    <input type="hidden" name="type" value="{{ $auction ? 'auction' : 'item' }}">
-                    @if (!$auction)
+                    <input type="hidden" name="type" value="{{ $fromCart ? 'cart' : ($auction ? 'auction' : 'item') }}">
+                    @if (!$fromCart && !$auction)
                         <input type="hidden" name="quantity" value="{{ $quantity }}">
                     @endif
 
@@ -47,18 +47,37 @@
                             <!-- Detail Produk -->
                             <div class="bg-white p-3 rounded-xl">
                                 <h3 class="font-semibold mb-3">Produk yang Dibeli</h3>
-                                <div class="flex items-end">
-                                    <img src="{{ asset('storage/' . ($auction ? $auction->image_path : $item->image_path)) }}"
-                                        class="w-20 h-20 object-cover rounded mr-4">
-                                    <div>
-                                        <p class="text-lg fw-bold">{{ $auction ? $auction->name : $item->name }}</p>
-                                        @if (!$auction)
-                                            <p class="mb-0">Jumlah: {{ $quantity }}</p>
-                                            <p class="fs-6">Harga Satuan: Rp {{ number_format($item->price, 0, ',', '.') }}</p>
-                                        @endif
-                                        <p class="fs-6">Total Harga: Rp {{ number_format($totalPrice, 0, ',', '.') }}</p>
+
+                                @if ($fromCart)
+                                    @foreach ($items as $cartItem)
+                                        <div class="d-flex justify-content-between align-items-center mb-3 bg_category">
+                                            <div class="d-flex gap-2 align-items-end">
+                                                <img class="rounded-lg" src="{{ asset('storage/' . $cartItem['model']->image_path) }}" alt="" width="70">
+                                                <div>
+                                                    <p class="fw-bold mb-1">{{ $cartItem['model']->name }}</p>
+                                                    <p class="">Jumlah: {{ $cartItem['quantity'] }}</p>
+                                                    <small>Harga Satuan: Rp {{ number_format($cartItem['model']->price, 0, ',', '.') }}</small>
+                                                </div>
+                                            </div>
+                                            <p class="fs-6">Rp {{ number_format($cartItem['subtotal'], 0, ',', '.') }}</p>
+                                        </div>
+                                    @endforeach
+                                @else
+
+                                    <div class="flex items-end">
+                                        <img src="{{ asset('storage/' . ($auction ? $auction->image_path : $item->image_path)) }}"
+                                            class="w-20 h-20 object-cover rounded mr-4">
+                                        <div>
+                                            <p class="text-lg fw-bold">{{ $auction ? $auction->name : $item->name }}</p>
+                                            @if (!$auction)
+                                                <p class="mb-0">Jumlah: {{ $quantity }}</p>
+                                                <p class="fs-6">Harga Satuan: Rp {{ number_format($item->price, 0, ',', '.') }}</p>
+                                            @endif
+                                            <p class="fs-6">Total Harga: Rp {{ number_format($totalPrice, 0, ',', '.') }}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                
+                                @endif
                             </div>
                         </div>
 

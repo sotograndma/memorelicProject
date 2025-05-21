@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\DB;
 class TransactionController extends Controller
 {
     // Halaman Checkout
-    public function checkout(Request $request, $id)
+    public function checkout(Request $request, $id = null)
     {
         $user = Auth::user();
         $type = $request->query('type');
@@ -23,7 +23,34 @@ class TransactionController extends Controller
         $auction = null;
         $item = null;
         $totalPrice = 0;
+        $items = [];
 
+        // Cek jika ada cart session
+        if (session()->has('cart_items')) {
+            $cart = session()->get('cart_items');
+            $items = [];
+            $totalPrice = 0;
+
+            foreach ($cart as $itemId => $cartItem) {
+                $foundItem = \App\Models\Item::find($itemId);
+                if ($foundItem) {
+                    $items[] = [
+                        'model' => $foundItem,
+                        'quantity' => $cartItem['quantity'],
+                        'subtotal' => $foundItem->price * $cartItem['quantity'],
+                    ];
+                    $totalPrice += $foundItem->price * $cartItem['quantity'];
+                }
+            }
+
+            return view('customer.transactions.checkout', [
+                'items' => $items,
+                'totalPrice' => $totalPrice,
+                'fromCart' => true,
+            ]);
+        }
+
+        // Jika bukan dari keranjang
         if ($type === 'auction') {
             $auction = Auction::find($id);
             if (!$auction) {
@@ -44,9 +71,11 @@ class TransactionController extends Controller
             'auction' => $auction,
             'item' => $item,
             'quantity' => $quantity,
-            'totalPrice' => $totalPrice
+            'totalPrice' => $totalPrice,
+            'fromCart' => false,
         ]);
     }
+
 
     public function processCheckout(Request $request, $id)
     {
@@ -54,75 +83,138 @@ class TransactionController extends Controller
 
         $request->validate([
             'shipping_address' => 'required|string|max:255',
-            'type' => 'required|in:item,auction',
-            'quantity' => 'nullable|integer|min:1' // jika ingin support beli >1
+            'type' => 'required|in:item,auction,cart',
+            'quantity' => 'nullable|integer|min:1'
         ]);
 
         $type = $request->type;
-        $auction = null;
-        $item = null;
         $quantity = $request->quantity ?? 1;
-
-        if ($type === 'auction') {
-            $auction = Auction::find($id);
-            if (!$auction) {
-                return redirect()->route('customer.dashboard')->with('error', 'Barang lelang tidak ditemukan.');
-            }
-            $totalPrice = $auction->highest_bid ?? $auction->starting_bid;
-        } else {
-            $item = Item::find($id);
-            if (!$item) {
-                return redirect()->route('customer.dashboard')->with('error', 'Barang tidak ditemukan.');
-            }
-
-            // Cek apakah stok cukup
-            if ($item->stock < $quantity) {
-                return redirect()->back()->with('error', 'Stok tidak mencukupi untuk jumlah yang dipilih.');
-            }
-
-            $totalPrice = $item->price * $quantity;
-        }
-
         $paymentCode = 'PAY-' . strtoupper(substr(md5(time()), 0, 8));
 
         DB::beginTransaction();
         try {
-            $transaction = Transaction::create([
-                'customer_id' => $user->id,
-                'auction_id' => $auction ? $auction->id : null,
-                'item_id' => $item ? $item->id : null,
-                'total_price' => $totalPrice,
-                'quantity' => $quantity,
-                'status' => 'waiting_payment',
-                'payment_code' => $paymentCode,
-                'shipping_address' => $request->shipping_address,
-            ]);
-
-            if ($auction) {
-                $auction->is_checkout_done = true;
-                $auction->status = 'sold';
-                $auction->save();
-            }
-
-            if ($item) {
-                // Kurangi stok
-                $item->stock -= $quantity;
-
-                // Jika stok habis, ubah status jadi 'sold'
-                if ($item->stock <= 0) {
-                    $item->status = 'sold';
-                    $item->stock = 0; // pastikan tidak negatif
+            // === Jika checkout dari CART ===
+            if ($type === 'cart') {
+                $cart = session()->get('cart', []);
+                if (empty($cart)) {
+                    return redirect()->route('customer.cart.view')->with('error', 'Keranjang kosong.');
                 }
 
+                $transactionIds = [];
+
+                foreach ($cart as $itemId => $cartItem) {
+                    $item = Item::find($itemId);
+
+                    if (!$item) continue;
+
+                    $qty = $cartItem['quantity'];
+                    $totalPrice = $item->price * $qty;
+
+                    // Cek stok
+                    if ($item->stock < $qty) {
+                        DB::rollBack();
+                        return redirect()->route('customer.cart.view')->with('error', 'Stok tidak cukup untuk: ' . $item->name);
+                    }
+
+                    // Simpan transaksi
+                    $transaction = Transaction::create([
+                        'customer_id' => $user->id,
+                        'item_id' => $item->id,
+                        'total_price' => $totalPrice,
+                        'quantity' => $qty,
+                        'status' => 'waiting_payment',
+                        'payment_code' => $paymentCode,
+                        'shipping_address' => $request->shipping_address,
+                    ]);
+
+                    $transactionIds[] = $transaction->id;
+
+                    // Update stok
+                    $item->stock -= $qty;
+                    if ($item->stock <= 0) {
+                        $item->stock = 0;
+                        $item->status = 'sold';
+                    }
+                    $item->save();
+                }
+
+                // Hapus keranjang setelah checkout berhasil
+                
+                session()->forget('cart');
+                session()->forget('cart_items');
+
+                DB::commit();
+                return redirect()->route('customer.payment.code', ['transaction_id' => implode(',', $transactionIds)]);
+            }
+
+            // === Jika checkout satuan (item atau auction) ===
+            $auction = null;
+            $item = null;
+            $totalPrice = 0;
+
+            if ($type === 'auction') {
+                $auction = Auction::find($id);
+                if (!$auction) {
+                    return redirect()->route('customer.dashboard')->with('error', 'Barang lelang tidak ditemukan.');
+                }
+
+                $totalPrice = $auction->highest_bid ?? $auction->starting_bid;
+
+                Transaction::create([
+                    'customer_id' => $user->id,
+                    'auction_id' => $auction->id,
+                    'total_price' => $totalPrice,
+                    'quantity' => 1,
+                    'status' => 'waiting_payment',
+                    'payment_code' => $paymentCode,
+                    'shipping_address' => $request->shipping_address,
+                ]);
+
+                $auction->update([
+                    'is_checkout_done' => true,
+                    'status' => 'sold',
+                ]);
+            } elseif ($type === 'item') {
+                $item = Item::find($id);
+                if (!$item) {
+                    return redirect()->route('customer.dashboard')->with('error', 'Barang tidak ditemukan.');
+                }
+
+                if ($item->stock < $quantity) {
+                    return redirect()->back()->with('error', 'Stok tidak mencukupi untuk jumlah yang dipilih.');
+                }
+
+                $totalPrice = $item->price * $quantity;
+
+                Transaction::create([
+                    'customer_id' => $user->id,
+                    'item_id' => $item->id,
+                    'total_price' => $totalPrice,
+                    'quantity' => $quantity,
+                    'status' => 'waiting_payment',
+                    'payment_code' => $paymentCode,
+                    'shipping_address' => $request->shipping_address,
+                ]);
+
+                $item->stock -= $quantity;
+                if ($item->stock <= 0) {
+                    $item->status = 'sold';
+                    $item->stock = 0;
+                }
                 $item->save();
             }
 
             DB::commit();
-            return redirect()->route('customer.payment.code', ['transaction_id' => $transaction->id]);
+
+            // Untuk transaksi satuan, redirect ke halaman kode pembayaran
+            if ($type !== 'cart') {
+                $transaction = Transaction::latest()->where('customer_id', $user->id)->first();
+                return redirect()->route('customer.payment.code', ['transaction_id' => $transaction->id]);
+            }
+
         } catch (\Exception $e) {
             DB::rollBack();
-            dd('GAGAL TRANSAKSI:', $e->getMessage());
-            return redirect()->route('customer.dashboard')->with('error', 'Terjadi kesalahan saat checkout.');
+            return redirect()->route('customer.cart.view')->with('error', 'Gagal saat proses checkout: ' . $e->getMessage());
         }
     }
 

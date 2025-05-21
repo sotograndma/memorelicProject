@@ -44,7 +44,7 @@
 
                     <li class="d-flex align-items-center px-4 py-2">
                         <i class="bi bi-cart me-2"></i>
-                        <a href="{{ route('customer.transactions.history') }}" class="block">My Cart</a>
+                        <a href="{{ route('customer.cart.view') }}" class="block">My Cart</a>
                     </li>
                     
                     <li class="relative px-4 py-2">
